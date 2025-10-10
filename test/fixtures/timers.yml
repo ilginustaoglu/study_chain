@@ -1,0 +1,11 @@
+one:
+  name: Study Timer
+  seconds: 0
+  alarm_seconds: 3600
+  is_running: false
+
+two:
+  name: Break Timer
+  seconds: 300
+  alarm_seconds: 900
+  is_running: false

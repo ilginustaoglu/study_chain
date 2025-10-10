@@ -1,0 +1,129 @@
+<div class="container" style="max-width: 1200px; margin: 40px auto; padding: 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1 style="color: #6F4E37; font-size: 2.5em;">📚 My Study Materials</h1>
+    <%= link_to "← Home", homes_path, class: "btn-back", style: "text-decoration: none; background: #6F4E37; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;" %>
+  </div>
+
+  <div style="margin-bottom: 30px;">
+    <%= link_to "+ Add New Study Material", new_study_material_path, class: "btn-add", style: "text-decoration: none; background: #4A7C59; color: white; padding: 15px 30px; border-radius: 8px; font-weight: bold; display: inline-block;" %>
+  </div>
+
+  <% if @study_materials.empty? %>
+    <div style="background: #8B6F47; padding: 40px; border-radius: 10px; text-align: center;">
+      <p style="font-size: 1.2em; color: #6F4E37;">No study materials added yet. You can add new materials using the button above.</p>
+    </div>
+  <% else %>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+      <% @study_materials.each do |material| %>
+        <div style="background: white; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); padding: 20px; transition: transform 0.2s;" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+          <h3 style="color: #6F4E37; margin-bottom: 10px; font-size: 1.3em;"><%= material.title %></h3>
+          
+          <% if material.category.present? %>
+            <span style="background: #4A7C59; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.8em; display: inline-block; margin-bottom: 10px;">
+              <%= material.category %>
+            </span>
+          <% end %>
+          
+          <% if material.description.present? %>
+            <p style="color: #6F4E37; margin: 10px 0; font-size: 0.95em;">
+              <%= truncate(material.description, length: 100) %>
+            </p>
+          <% end %>
+          
+          <% if material.files.attached? %>
+            <div style="margin: 15px 0; padding: 10px; background: #8B6F47; border-radius: 5px;">
+              <strong style="color: #6F4E37;">📎 Files (<%= material.files.count %>)</strong>
+            </div>
+          <% end %>
+          
+          <div style="display: flex; gap: 10px; margin-top: 15px;">
+            <%= link_to "View", study_material_path(material), style: "flex: 1; text-align: center; background: #4A7C59; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+            <%= link_to "Edit", edit_study_material_path(material), style: "flex: 1; text-align: center; background: #8B6F47; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+            <%= link_to "Delete", study_material_path(material), method: :delete, data: { confirm: "Are you sure you want to delete?" }, style: "flex: 1; text-align: center; background: #C85A54; color: white; padding: 10px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  // Floating menu control
+  function toggleFloatingMenu() {
+    const menu = document.getElementById('floatingMenu');
+    const isVisible = menu.style.display === 'block';
+    menu.style.display = isVisible ? 'none' : 'block';
+  }
+
+  function closeFloatingMenu() {
+    const menu = document.getElementById('floatingMenu');
+    if (menu) {
+      menu.style.display = 'none';
+    }
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('floatingMenu');
+    const button = document.getElementById('floatingButton');
+    
+    if (menu && button && !menu.contains(event.target) && !button.contains(event.target)) {
+      closeFloatingMenu();
+    }
+  });
+
+  // Close menu with ESC key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeFloatingMenu();
+    }
+  });
+</script>
+
+<!-- Floating Menu Button -->
+<div id="floatingButton" onclick="toggleFloatingMenu()" style="position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <span style="color: white; font-size: 2em; font-weight: bold;">⋮</span>
+</div>
+
+<!-- Floating Menu -->
+<div id="floatingMenu" style="position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 999; display: none; min-width: 250px;">
+  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">📚 Study Tools</h3>
+  
+  <%= link_to homes_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">🏠</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Home</strong>
+      <small style="color: #6F4E37;">Timers & Notes</small>
+    </div>
+  <% end %>
+  
+  <%= link_to flashcard_collections_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">🎴</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Flashcards</strong>
+      <small style="color: #6F4E37;">Card collections</small>
+    </div>
+  <% end %>
+  
+  <%= link_to agendas_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">📅</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">My Agenda</strong>
+      <small style="color: #6F4E37;">Event calendar</small>
+    </div>
+  <% end %>
+  
+  <%= link_to reminders_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">⏰</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Reminders</strong>
+      <small style="color: #6F4E37;">Alarms and notes</small>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .menu-item:hover {
+    background: #f5ebe0 !important;
+  }
+</style>

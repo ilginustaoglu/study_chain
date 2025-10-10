@@ -1,0 +1,2 @@
+module FlashcardCollectionsHelper
+end

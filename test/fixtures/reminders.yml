@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  title: MyString
+  description: MyText
+  alarm_time: 2025-10-08 22:45:28
+  is_active: false
+
+two:
+  title: MyString
+  description: MyText
+  alarm_time: 2025-10-08 22:45:28
+  is_active: false

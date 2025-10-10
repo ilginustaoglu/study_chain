@@ -1,0 +1,22 @@
+<div class="form-page">
+  <div class="form-container">
+    <h1>✏️ Edit Note</h1>
+    
+    <%= form_with model: @note, local: true, class: "note-form" do |f| %>
+      <div class="form-group">
+        <%= f.label :title, "Title" %>
+        <%= f.text_field :title, class: "form-control", placeholder: "Note title", required: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :content, "Content" %>
+        <%= f.text_area :content, class: "form-control", placeholder: "Note content", rows: 10, required: true %>
+      </div>
+
+      <div class="form-buttons">
+        <%= f.submit "Update", class: "btn btn-primary" %>
+        <%= link_to "Cancel", root_path, class: "btn btn-secondary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

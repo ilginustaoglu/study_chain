@@ -1,0 +1,33 @@
+<div class="form-container">
+  <h1>Edit Timer</h1>
+
+  <%= form_with model: @timer, local: true, class: "standard-form" do |f| %>
+    <% if @timer.errors.any? %>
+      <div class="error-messages">
+        <h3><%= pluralize(@timer.errors.count, "error") %> prohibited this timer from being saved:</h3>
+        <ul>
+          <% @timer.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="form-group">
+      <%= f.label :name, "Timer Name" %>
+      <%= f.text_field :name, class: "form-control", required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :alarm_time, "Set Alarm (optional)" %>
+      <%= f.time_field :alarm_time, value: @timer.alarm_time, class: "form-control" %>
+      <small class="form-text">Set a time when the timer should alert you</small>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Update Timer", class: "btn btn-primary" %>
+      <%= link_to "Cancel", timers_path, class: "btn btn-secondary" %>
+      <%= link_to "Delete", timer_path(@timer), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+    </div>
+  <% end %>
+</div>

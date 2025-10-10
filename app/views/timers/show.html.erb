@@ -1,0 +1,18 @@
+<div class="show-container">
+  <h1><%= @timer.name %></h1>
+  
+  <div class="timer-details">
+    <p><strong>Current Time:</strong> <%= @timer.formatted_time %></p>
+    <p><strong>Status:</strong> <%= @timer.is_running ? 'Running' : 'Paused' %></p>
+    <% if @timer.alarm_seconds %>
+      <p><strong>Alarm Set:</strong> <%= @timer.alarm_time %></p>
+    <% end %>
+    <p><strong>Created:</strong> <%= @timer.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+  </div>
+
+  <div class="action-links">
+    <%= link_to "Edit", edit_timer_path(@timer), class: "btn btn-primary" %>
+    <%= link_to "Back to Timers", timers_path, class: "btn btn-secondary" %>
+    <%= link_to "Delete", timer_path(@timer), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+  </div>
+</div>

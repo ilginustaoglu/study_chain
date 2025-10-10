@@ -1,0 +1,155 @@
+<div class="container" style="max-width: 1200px; margin: 40px auto; padding: 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1 style="color: #6F4E37; font-size: 2.5em;">📅 My Agenda</h1>
+    <%= link_to "← Home", homes_path, class: "btn-back", style: "text-decoration: none; background: #6F4E37; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;" %>
+  </div>
+
+  <!-- Add New Event Form -->
+  <div style="background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%); padding: 25px; border-radius: 10px; margin-bottom: 30px; color: white;">
+    <h3 style="margin-bottom: 15px;">➕ Add New Event</h3>
+    <%= form_with model: @agenda, local: true do %>
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <%= label_tag 'agenda[title]', "Event Title *", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
+          <%= text_field_tag 'agenda[title]', nil, required: true, placeholder: "e.g., Math Exam", style: "width: 100%; padding: 12px; border: none; border-radius: 5px; font-size: 1em;" %>
+        </div>
+        <div>
+          <%= label_tag 'agenda[event_date]', "Date and Time *", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
+          <%= datetime_field_tag 'agenda[event_date]', nil, required: true, style: "width: 100%; padding: 12px; border: none; border-radius: 5px; font-size: 1em;" %>
+        </div>
+      </div>
+      <div style="margin-bottom: 15px;">
+        <%= label_tag 'agenda[description]', "Description", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
+        <%= text_area_tag 'agenda[description]', nil, rows: 2, placeholder: "Additional details...", style: "width: 100%; padding: 12px; border: none; border-radius: 5px; font-size: 1em;" %>
+      </div>
+      <%= submit_tag "Add Event", style: "background: white; color: #C85A54; padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1em;" %>
+    <% end %>
+  </div>
+
+  <!-- Calendar View -->
+  <div style="background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+    <h3 style="color: #6F4E37; margin-bottom: 20px;">📆 Events</h3>
+    
+    <% if @agendas.empty? %>
+      <p style="text-align: center; color: #6F4E37; padding: 30px;">No events added yet.</p>
+    <% else %>
+      <% grouped_agendas = @agendas.group_by { |a| a.event_date.to_date } %>
+      <% grouped_agendas.each do |date, agendas| %>
+        <div style="margin-bottom: 30px;">
+          <h4 style="color: #C85A54; background: #ffe6e4; padding: 10px 15px; border-radius: 8px; margin-bottom: 15px;">
+            <%= l(date, format: :long) %> (<%= agendas.count %> <%= agendas.count == 1 ? 'event' : 'events' %>)
+          </h4>
+          
+          <div style="display: grid; gap: 15px; margin-left: 20px;">
+            <% agendas.each do |agenda| %>
+              <div style="border-left: 4px solid #C85A54; background: #fffaf5; padding: 15px; border-radius: 8px; position: relative;">
+                <div style="display: flex; justify-content: space-between; align-items: start;">
+                  <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                      <span style="background: #C85A54; color: white; padding: 5px 10px; border-radius: 5px; font-size: 0.85em; font-weight: bold;">
+                        <%= agenda.event_date.strftime('%H:%M') %>
+                      </span>
+                      <h5 style="color: #6F4E37; margin: 0; font-size: 1.2em;"><%= agenda.title %></h5>
+                    </div>
+                    
+                    <% if agenda.description.present? %>
+                      <p style="color: #6F4E37; margin: 8px 0 0 0; padding-left: 5px;">
+                        <%= agenda.description %>
+                      </p>
+                    <% end %>
+                  </div>
+                  
+                  <div style="display: flex; gap: 8px;">
+                    <%= link_to "✏️", edit_agenda_path(agenda), style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Edit" %>
+                    <%= link_to "🗑️", agenda_path(agenda), method: :delete, data: { confirm: "Are you sure you want to delete this event?" }, style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Delete" %>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+  // Floating menu control
+  function toggleFloatingMenu() {
+    const menu = document.getElementById('floatingMenu');
+    const isVisible = menu.style.display === 'block';
+    menu.style.display = isVisible ? 'none' : 'block';
+  }
+
+  function closeFloatingMenu() {
+    const menu = document.getElementById('floatingMenu');
+    if (menu) {
+      menu.style.display = 'none';
+    }
+  }
+
+  // Close menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const menu = document.getElementById('floatingMenu');
+    const button = document.getElementById('floatingButton');
+    
+    if (menu && button && !menu.contains(event.target) && !button.contains(event.target)) {
+      closeFloatingMenu();
+    }
+  });
+
+  // Close menu with ESC key
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeFloatingMenu();
+    }
+  });
+</script>
+
+<!-- Floating Menu Button -->
+<div id="floatingButton" onclick="toggleFloatingMenu()" style="position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+  <span style="color: white; font-size: 2em; font-weight: bold;">⋮</span>
+</div>
+
+<!-- Floating Menu -->
+<div id="floatingMenu" style="position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 999; display: none; min-width: 250px;">
+  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">📚 Study Tools</h3>
+  
+  <%= link_to homes_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">🏠</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Home</strong>
+      <small style="color: #6F4E37;">Timers & Notes</small>
+    </div>
+  <% end %>
+  
+  <%= link_to study_materials_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">📝</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">My Study Materials</strong>
+      <small style="color: #6F4E37;">PDF and image upload</small>
+    </div>
+  <% end %>
+  
+  <%= link_to flashcard_collections_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">🎴</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Flashcards</strong>
+      <small style="color: #6F4E37;">Card collections</small>
+    </div>
+  <% end %>
+  
+  <%= link_to reminders_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; transition: background 0.2s;" do %>
+    <span style="font-size: 1.5em;">⏰</span>
+    <div>
+      <strong style="display: block; font-size: 1em;">Reminders</strong>
+      <small style="color: #6F4E37;">Alarms and notes</small>
+    </div>
+  <% end %>
+</div>
+
+<style>
+  .menu-item:hover {
+    background: #f5ebe0 !important;
+  }
+</style>
