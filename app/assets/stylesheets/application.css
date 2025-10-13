@@ -15,6 +15,63 @@
  */
 
 /* ============================================
+   CSS VARIABLES - THEME COLORS
+   ============================================ */
+:root {
+  /* Light Mode Colors */
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f5f7fa;
+  
+  --text-primary: #2c3e50;
+  --text-secondary: #5b7c99;
+  --text-tertiary: #999;
+  
+  --border-color: #e1e8ed;
+  --border-color-hover: #4a90e2;
+  
+  --accent-primary: #4a90e2;
+  --accent-hover: #357abd;
+  
+  --btn-secondary-bg: #e1e8ed;
+  --btn-secondary-text: #5b7c99;
+  --btn-secondary-hover: #cbd6e2;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.08);
+  
+  --scrollbar-track: #f1f1f1;
+  --scrollbar-thumb: #cbd6e2;
+}
+
+[data-theme="dark"] {
+  /* Dark Mode Colors */
+  --bg-primary: #1a1d23;
+  --bg-secondary: #2a2f3a;
+  --bg-tertiary: #343a46;
+  
+  --text-primary: #e1e8ed;
+  --text-secondary: #cbd6e2;
+  --text-tertiary: #8a92a3;
+  
+  --border-color: #3a4050;
+  --border-color-hover: #4a90e2;
+  
+  --accent-primary: #4a90e2;
+  --accent-hover: #5ba3f5;
+  
+  --btn-secondary-bg: #3a4050;
+  --btn-secondary-text: #cbd6e2;
+  --btn-secondary-hover: #4a5060;
+  
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 2px 12px rgba(0, 0, 0, 0.4);
+  
+  --scrollbar-track: #2a2f3a;
+  --scrollbar-thumb: #4a5060;
+}
+
+/* ============================================
    GENEL STILLER
    ============================================ */
 * {
@@ -25,10 +82,12 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #2A1810;
+  background: var(--bg-primary);
+  color: var(--text-primary);
   min-height: 100vh;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ============================================
@@ -54,36 +113,37 @@ body {
 }
 
 .timer-box {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
   padding: 20px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-sm);
   width: 280px;
-  backdrop-filter: blur(10px);
-  border: 2px solid rgba(139, 111, 71, 0.4);
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .timer-header {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #4A7C59;
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 15px;
   padding-bottom: 10px;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .timer-display {
   font-size: 2.5rem;
   font-weight: 700;
   text-align: center;
-  color: #333;
+  color: var(--text-primary);
   font-family: 'Courier New', monospace;
   margin: 15px 0;
   padding: 15px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  border: 2px solid #e0e0e0;
+  background: var(--bg-tertiary);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .timer-controls {
@@ -94,21 +154,21 @@ body {
 }
 
 .timer-btn {
-  background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%);
+  background: var(--accent-primary);
   color: white;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   width: 50px;
   height: 50px;
   font-size: 1.3rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(111, 78, 55, 0.3);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(74, 144, 226, 0.2);
 }
 
 .timer-btn:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 20px rgba(74, 124, 89, 0.5);
+  background: var(--accent-hover);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
 }
 
 .timer-btn:active {
@@ -120,39 +180,40 @@ body {
   gap: 10px;
   margin-top: 15px;
   padding-top: 15px;
-  border-top: 2px solid #e0e0e0;
+  border-top: 1px solid var(--border-color);
 }
 
 .alarm-input {
   flex: 1;
   padding: 10px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 0.95rem;
   font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .alarm-input:focus {
   outline: none;
-  border-color: #4A7C59;
-  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .alarm-btn {
-  background: #C85A54;
+  background: var(--accent-primary);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 10px 15px;
   font-size: 1.2rem;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .alarm-btn:hover {
-  background: #8B3A3A;
-  transform: scale(1.1);
+  background: var(--accent-hover);
 }
 
 /* ============================================
@@ -164,17 +225,19 @@ body {
   right: 20px;
   width: 400px;
   max-height: 90vh;
-  background: rgba(255, 255, 255, 0.98);
-  border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
   z-index: 1000;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .todo-header {
-  background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%);
+  background: var(--accent-primary);
   padding: 20px;
   color: white;
   display: flex;
@@ -190,21 +253,20 @@ body {
 }
 
 .btn-add {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.2);
   border: 2px solid white;
   color: white;
   padding: 8px 16px;
-  border-radius: 25px;
+  border-radius: 20px;
   cursor: pointer;
   font-weight: 600;
   font-size: 0.9rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .btn-add:hover {
   background: white;
-  color: #4A7C59;
-  transform: translateY(-2px);
+  color: var(--accent-primary);
 }
 
 /* ============================================
@@ -212,9 +274,10 @@ body {
    ============================================ */
 .add-form {
   padding: 20px;
-  background: #f8f9fa;
-  border-bottom: 1px solid #e0e0e0;
+  background: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
   flex-shrink: 0;
+  transition: background-color 0.3s ease;
 }
 
 .todo-form .form-input,
@@ -222,17 +285,20 @@ body {
   width: 100%;
   padding: 12px;
   margin-bottom: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 0.95rem;
   font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
 }
 
 .todo-form .form-input:focus,
 .todo-form .form-textarea:focus {
   outline: none;
-  border-color: #4A7C59;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .todo-form .form-textarea {
@@ -250,31 +316,29 @@ body {
   flex: 1;
   padding: 10px 20px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   font-size: 0.95rem;
 }
 
 .btn-save {
-  background: #4A7C59;
+  background: var(--accent-primary);
   color: white;
 }
 
 .btn-save:hover {
-  background: #2D5F3F;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.4);
+  background: var(--accent-hover);
 }
 
 .btn-cancel {
-  background: #e0e0e0;
-  color: #666;
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
 }
 
 .btn-cancel:hover {
-  background: #d0d0d0;
+  background: var(--btn-secondary-hover);
 }
 
 /* ============================================
@@ -288,18 +352,18 @@ body {
 
 .empty-message {
   text-align: center;
-  color: #999;
+  color: var(--text-tertiary);
   padding: 40px 20px;
   font-style: italic;
 }
 
 .todo-item {
-  background: white;
-  border: 2px solid #f0f0f0;
-  border-radius: 10px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
   padding: 15px;
   margin-bottom: 12px;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -307,9 +371,8 @@ body {
 }
 
 .todo-item:hover {
-  border-color: #4A7C59;
-  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.2);
-  transform: translateX(-3px);
+  border-color: var(--border-color-hover);
+  box-shadow: 0 2px 8px rgba(74, 144, 226, 0.15);
 }
 
 .todo-item-header {
@@ -320,13 +383,13 @@ body {
 .todo-item-header h3 {
   margin: 0 0 5px 0;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 .click-hint {
   font-size: 0.75rem;
-  color: #999;
+  color: var(--text-tertiary);
   font-style: italic;
 }
 
@@ -382,7 +445,7 @@ body {
 
 .modal-content {
   position: relative;
-  background-color: white;
+  background-color: var(--bg-secondary);
   margin: 5% auto;
   padding: 40px;
   width: 90%;
@@ -390,6 +453,7 @@ body {
   border-radius: 15px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: slideDown 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -407,7 +471,7 @@ body {
   position: absolute;
   top: 15px;
   right: 20px;
-  color: #999;
+  color: var(--text-tertiary);
   font-size: 35px;
   font-weight: 300;
   cursor: pointer;
@@ -416,19 +480,19 @@ body {
 
 .modal-close:hover,
 .modal-close:focus {
-  color: #333;
+  color: var(--text-primary);
 }
 
 #modalBody h2 {
-  color: #333;
+  color: var(--text-primary);
   margin-bottom: 20px;
   font-size: 2rem;
-  border-bottom: 3px solid #6F4E37;
+  border-bottom: 2px solid var(--accent-primary);
   padding-bottom: 10px;
 }
 
 .modal-content-text {
-  color: #555;
+  color: var(--text-secondary);
   line-height: 1.8;
   font-size: 1.1rem;
   margin: 20px 0;
@@ -439,8 +503,8 @@ body {
 .modal-footer {
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid #e0e0e0;
-  color: #999;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-tertiary);
   font-size: 0.9rem;
 }
 
@@ -452,7 +516,7 @@ body {
 .modal-form-group label {
   display: block;
   margin-bottom: 8px;
-  color: #555;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -460,17 +524,19 @@ body {
 .modal-form-control {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .modal-form-control:focus {
   outline: none;
-  border-color: #4A7C59;
-  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 textarea.modal-form-control {
@@ -493,21 +559,22 @@ textarea.modal-form-control {
   align-items: center;
   justify-content: center;
   padding: 40px 20px;
-  background: #2A1810;
+  background: var(--bg-primary);
 }
 
 .form-container {
-  background: white;
+  background: var(--bg-secondary);
   padding: 40px;
   border-radius: 15px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--shadow-md);
   width: 100%;
   max-width: 600px;
+  transition: background-color 0.3s ease;
 }
 
 .form-container h1 {
   margin-bottom: 30px;
-  color: #333;
+  color: var(--text-primary);
   font-size: 2rem;
   text-align: center;
 }
@@ -519,7 +586,7 @@ textarea.modal-form-control {
 .note-form label {
   display: block;
   margin-bottom: 8px;
-  color: #555;
+  color: var(--text-secondary);
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -527,17 +594,19 @@ textarea.modal-form-control {
 .note-form .form-control {
   width: 100%;
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 1rem;
   font-family: inherit;
-  transition: border-color 0.3s ease;
+  transition: border-color 0.2s ease;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .note-form .form-control:focus {
   outline: none;
-  border-color: #4A7C59;
-  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .note-form textarea.form-control {
@@ -555,35 +624,32 @@ textarea.modal-form-control {
   flex: 1;
   padding: 14px 28px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-weight: 600;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-align: center;
   text-decoration: none;
   display: inline-block;
 }
 
 .btn-primary {
-  background: #4A7C59;
+  background: var(--accent-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  background: #2D5F3F;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(74, 124, 89, 0.4);
+  background: var(--accent-hover);
 }
 
 .btn-secondary {
-  background: #e0e0e0;
-  color: #666;
+  background: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
 }
 
 .btn-secondary:hover {
-  background: #d0d0d0;
-  transform: translateY(-2px);
+  background: var(--btn-secondary-hover);
 }
 
 /* ============================================
@@ -691,19 +757,19 @@ textarea.modal-form-control {
 
 .todo-list::-webkit-scrollbar-track,
 .modal-content-text::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--scrollbar-track);
   border-radius: 10px;
 }
 
 .todo-list::-webkit-scrollbar-thumb,
 .modal-content-text::-webkit-scrollbar-thumb {
-  background: #6F4E37;
+  background: var(--scrollbar-thumb);
   border-radius: 10px;
 }
 
 .todo-list::-webkit-scrollbar-thumb:hover,
 .modal-content-text::-webkit-scrollbar-thumb:hover {
-  background: #4A7C59;
+  background: var(--accent-primary);
 }
 
 /* ============================================
@@ -746,22 +812,22 @@ textarea.modal-form-control {
 }
 
 .btn-edit-mini:hover {
-  background: #4A7C59;
+  background: var(--accent-primary);
   transform: scale(1.1);
 }
 
 .btn-delete-mini:hover {
-  background: #C85A54;
+  background: #e74c3c;
   transform: scale(1.1);
 }
 
 .timer-alarm-info {
   text-align: center;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-secondary);
   margin-top: 10px;
   padding: 8px;
-  background: #f8f9fa;
+  background: var(--bg-tertiary);
   border-radius: 8px;
 }
 
@@ -770,9 +836,10 @@ textarea.modal-form-control {
   max-width: 600px;
   margin: 40px auto;
   padding: 40px;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.3s ease;
 }
 
 .standard-form {
@@ -789,27 +856,29 @@ textarea.modal-form-control {
 
 .form-group label {
   font-weight: 600;
-  color: #333;
+  color: var(--text-primary);
   font-size: 1rem;
 }
 
 .form-control {
   padding: 12px;
-  border: 2px solid #e0e0e0;
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
   font-size: 1rem;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #4A7C59;
-  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
 }
 
 .form-text {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-secondary);
 }
 
 .form-actions {
@@ -821,24 +890,23 @@ textarea.modal-form-control {
 .btn {
   padding: 12px 24px;
   border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-decoration: none;
   display: inline-block;
   text-align: center;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%);
+  background: var(--accent-primary);
   color: white;
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.4);
+  background: var(--accent-hover);
 }
 
 .btn-secondary {
@@ -848,29 +916,27 @@ textarea.modal-form-control {
 
 .btn-secondary:hover {
   background: #5a6268;
-  transform: translateY(-2px);
 }
 
 .btn-danger {
-  background: #C85A54;
+  background: #e74c3c;
   color: white;
 }
 
 .btn-danger:hover {
-  background: #8B3A3A;
-  transform: translateY(-2px);
+  background: #c0392b;
 }
 
 .error-messages {
-  background: #ffe6e4;
-  border: 2px solid #C85A54;
-  border-radius: 8px;
+  background: #fee;
+  border: 1px solid #e74c3c;
+  border-radius: 6px;
   padding: 15px;
   margin-bottom: 20px;
 }
 
 .error-messages h3 {
-  color: #C85A54;
+  color: #e74c3c;
   margin-bottom: 10px;
   font-size: 1rem;
 }
@@ -880,7 +946,7 @@ textarea.modal-form-control {
 }
 
 .error-messages li {
-  color: #8B3A3A;
+  color: #c0392b;
   margin-bottom: 5px;
 }
 
@@ -889,16 +955,17 @@ textarea.modal-form-control {
   max-width: 800px;
   margin: 40px auto;
   padding: 40px;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
+  transition: background-color 0.3s ease;
 }
 
 .show-container h1 {
-  color: #6F4E37;
+  color: var(--text-primary);
   margin-bottom: 30px;
   font-size: 2rem;
-  border-bottom: 3px solid #6F4E37;
+  border-bottom: 2px solid var(--accent-primary);
   padding-bottom: 15px;
 }
 
@@ -909,11 +976,11 @@ textarea.modal-form-control {
 .timer-details p {
   margin-bottom: 15px;
   font-size: 1.1rem;
-  color: #333;
+  color: var(--text-primary);
 }
 
 .timer-details strong {
-  color: #4A7C59;
+  color: var(--accent-primary);
   margin-right: 10px;
 }
 
@@ -922,7 +989,7 @@ textarea.modal-form-control {
   gap: 10px;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 2px solid #e0e0e0;
+  border-top: 2px solid var(--border-color);
 }
 
 /* Message container stilleri */
@@ -930,20 +997,155 @@ textarea.modal-form-control {
   max-width: 600px;
   margin: 100px auto;
   padding: 60px 40px;
-  background: white;
+  background: var(--bg-secondary);
   border-radius: 15px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-md);
   text-align: center;
+  transition: background-color 0.3s ease;
 }
 
 .message-container h1 {
-  color: #6F4E37;
+  color: var(--text-primary);
   margin-bottom: 20px;
   font-size: 2rem;
 }
 
 .message-container p {
-  color: #666;
+  color: var(--text-secondary);
   font-size: 1.1rem;
   margin-bottom: 30px;
+}
+
+/* ============================================
+   THEME SWITCHER
+   ============================================ */
+.theme-switcher {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2000;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 25px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.theme-switcher:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.theme-switcher-label {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+
+.theme-toggle-button {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.theme-toggle-button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+.theme-icon {
+  font-size: 1.1em;
+}
+
+/* ============================================
+   FLOATING MENU & BUTTON
+   ============================================ */
+.floating-button {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 65px;
+  height: 65px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  z-index: 1000;
+  transition: all 0.2s ease;
+}
+
+.floating-button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.floating-menu {
+  position: fixed;
+  bottom: 110px;
+  right: 30px;
+  background: var(--bg-secondary);
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  padding: 15px;
+  z-index: 999;
+  display: none;
+  min-width: 250px;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.floating-menu-title {
+  color: var(--text-primary);
+  margin: 0 0 15px 0;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--border-color);
+  font-size: 1.1em;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  text-decoration: none;
+  color: var(--text-primary);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  transition: background 0.2s;
+}
+
+.menu-item:hover {
+  background: var(--bg-tertiary);
+}
+
+.menu-icon {
+  font-size: 1.5em;
+}
+
+.menu-text strong {
+  display: block;
+  font-size: 1em;
+  color: var(--text-primary);
+}
+
+.menu-text small {
+  color: var(--text-secondary);
+  font-size: 0.85em;
 }

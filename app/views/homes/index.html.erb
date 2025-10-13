@@ -1,3 +1,12 @@
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <span class="theme-switcher-label">Theme:</span>
+  <button class="theme-toggle-button" onclick="toggleTheme()">
+    <span class="theme-icon" id="themeIcon">🌙</span>
+    <span id="themeText">Dark</span>
+  </button>
+</div>
+
 <div class="library-container">
   <!-- Timers (Top Left) -->
   <div class="timers-panel">
@@ -223,6 +232,49 @@
     Notification.requestPermission();
   }
 
+  // ============================================
+  // THEME SWITCHER FUNCTIONALITY
+  // ============================================
+  
+  // Get saved theme or default to light
+  function getTheme() {
+    return localStorage.getItem('theme') || 'light';
+  }
+
+  // Set theme
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeButton(theme);
+  }
+
+  // Update theme button text and icon
+  function updateThemeButton(theme) {
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    
+    if (theme === 'dark') {
+      themeIcon.textContent = '☀️';
+      themeText.textContent = 'Light';
+    } else {
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark';
+    }
+  }
+
+  // Toggle theme
+  function toggleTheme() {
+    const currentTheme = getTheme();
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  }
+
+  // Initialize theme on page load
+  (function initTheme() {
+    const savedTheme = getTheme();
+    setTheme(savedTheme);
+  })();
+
   // Floating menu kontrolü
   function toggleFloatingMenu() {
     const menu = document.getElementById('floatingMenu');
@@ -246,49 +298,43 @@
 </script>
 
 <!-- Floating Menu Button -->
-<div id="floatingButton" onclick="toggleFloatingMenu()" style="position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; background: linear-gradient(135deg, #6F4E37 0%, #4A7C59 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 20px rgba(0,0,0,0.3); z-index: 1000; transition: transform 0.3s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+<div id="floatingButton" onclick="toggleFloatingMenu()" class="floating-button">
   <span style="color: white; font-size: 2em; font-weight: bold;">⋮</span>
 </div>
 
 <!-- Floating Menu -->
-<div id="floatingMenu" style="position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 999; display: none; min-width: 250px;">
-  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">📚 Study Tools</h3>
+<div id="floatingMenu" class="floating-menu">
+  <h3 class="floating-menu-title">📚 Study Tools</h3>
   
-  <%= link_to study_materials_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #4A3728; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">📝</span>
-    <div>
-      <strong style="display: block; font-size: 1em;">My Study Materials</strong>
-      <small style="color: #6F4E37;">PDF and image upload</small>
+  <%= link_to study_materials_path, class: "menu-item" do %>
+    <span class="menu-icon">📝</span>
+    <div class="menu-text">
+      <strong>My Study Materials</strong>
+      <small>PDF and image upload</small>
     </div>
   <% end %>
   
-  <%= link_to flashcard_collections_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #4A3728; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">🎴</span>
-    <div>
-      <strong style="display: block; font-size: 1em;">Flashcards</strong>
-      <small style="color: #6F4E37;">Card collections</small>
+  <%= link_to flashcard_collections_path, class: "menu-item" do %>
+    <span class="menu-icon">🎴</span>
+    <div class="menu-text">
+      <strong>Flashcards</strong>
+      <small>Card collections</small>
     </div>
   <% end %>
   
-  <%= link_to agendas_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #4A3728; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">📅</span>
-    <div>
-      <strong style="display: block; font-size: 1em;">My Agenda</strong>
-      <small style="color: #6F4E37;">Event calendar</small>
+  <%= link_to agendas_path, class: "menu-item" do %>
+    <span class="menu-icon">📅</span>
+    <div class="menu-text">
+      <strong>My Agenda</strong>
+      <small>Event calendar</small>
     </div>
   <% end %>
   
-  <%= link_to reminders_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #4A3728; border-radius: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">⏰</span>
-    <div>
-      <strong style="display: block; font-size: 1em;">Reminders</strong>
-      <small style="color: #6F4E37;">Alarms and notes</small>
+  <%= link_to reminders_path, class: "menu-item" do %>
+    <span class="menu-icon">⏰</span>
+    <div class="menu-text">
+      <strong>Reminders</strong>
+      <small>Alarms and notes</small>
     </div>
   <% end %>
 </div>
-
-<style>
-  .menu-item:hover {
-    background: #f5ebe0 !important;
-  }
-</style>
