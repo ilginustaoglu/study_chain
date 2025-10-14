@@ -35,9 +35,9 @@
             <div class="timer-display" id="timer-display-<%= timer.id %>"><%= timer.formatted_time %></div>
             <div class="timer-controls">
               <button class="timer-btn" id="toggle-btn-<%= timer.id %>" onclick="toggleTimerAction(<%= timer.id %>)" data-running="<%= timer.is_running %>">
-                <%= timer.is_running ? '⏸' : '▶' %>
+                <%= timer.is_running ? '<i class="fa-solid fa-pause"></i>'.html_safe : '<i class="fa-solid fa-play"></i>'.html_safe %>
               </button>
-              <button class="timer-btn" onclick="resetTimerAction(<%= timer.id %>)">↻</button>
+              <button class="timer-btn" onclick="resetTimerAction(<%= timer.id %>)"><i class="fa-solid fa-reply"></i></button>
             </div>
             <% if timer.alarm_seconds %>
               <div class="timer-alarm-info">
@@ -130,7 +130,7 @@
     const toggleBtn = document.getElementById(`toggle-btn-${timerId}`);
     if (toggleBtn) {
       toggleBtn.setAttribute('data-running', isRunning);
-      toggleBtn.textContent = isRunning ? '⏸' : '▶';
+      toggleBtn.innerHTML = isRunning ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
     }
   }
 
