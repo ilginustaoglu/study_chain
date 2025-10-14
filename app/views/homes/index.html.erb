@@ -14,8 +14,7 @@
       <div class="timer-header"> ⏱️ Study </div>
       <div class="timer-display" id="timer1-display">00:00:00</div>
       <div class="timer-controls">
-        <button class="timer-btn" onclick="startTimer(1)">▶️</button>
-        <button class="timer-btn" onclick="pauseTimer(1)">⏸️</button>
+        <button class="timer-btn" id="toggle-btn-1" onclick="toggleTimer(1)">▶️</button>
         <button class="timer-btn" onclick="resetTimer(1)">↪️</button>
       </div>
       <div class="timer-alarm">
@@ -28,8 +27,7 @@
       <div class="timer-header"> ⏱️ Break </div>
       <div class="timer-display" id="timer2-display">00:00:00</div>
       <div class="timer-controls">
-        <button class="timer-btn" onclick="startTimer(2)">▶️</button>
-        <button class="timer-btn" onclick="pauseTimer(2)">⏸️</button>
+        <button class="timer-btn" id="toggle-btn-2" onclick="toggleTimer(2)">▶️</button>
         <button class="timer-btn" onclick="resetTimer(2)">↪️</button>
       </div>
       <div class="timer-alarm">
@@ -166,10 +164,26 @@
     document.getElementById(`timer${timerNum}-display`).textContent = formatTime(timers[timerNum].seconds);
   }
 
+  function updateToggleButton(timerNum, isRunning) {
+    const toggleBtn = document.getElementById(`toggle-btn-${timerNum}`);
+    if (toggleBtn) {
+      toggleBtn.textContent = isRunning ? '⏸️' : '▶️';
+    }
+  }
+
+  function toggleTimer(timerNum) {
+    if (timers[timerNum].running) {
+      pauseTimer(timerNum);
+    } else {
+      startTimer(timerNum);
+    }
+  }
+
   function startTimer(timerNum) {
     if (timers[timerNum].running) return;
     
     timers[timerNum].running = true;
+    updateToggleButton(timerNum, true);
     timers[timerNum].interval = setInterval(() => {
       timers[timerNum].seconds++;
       updateDisplay(timerNum);
@@ -179,6 +193,7 @@
 
   function pauseTimer(timerNum) {
     timers[timerNum].running = false;
+    updateToggleButton(timerNum, false);
     if (timers[timerNum].interval) {
       clearInterval(timers[timerNum].interval);
       timers[timerNum].interval = null;

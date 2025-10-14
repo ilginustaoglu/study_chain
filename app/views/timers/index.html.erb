@@ -34,8 +34,9 @@
             </div>
             <div class="timer-display" id="timer-display-<%= timer.id %>"><%= timer.formatted_time %></div>
             <div class="timer-controls">
-              <button class="timer-btn" onclick="startTimerAction(<%= timer.id %>)">▶</button>
-              <button class="timer-btn" onclick="pauseTimerAction(<%= timer.id %>)">⏸</button>
+              <button class="timer-btn" id="toggle-btn-<%= timer.id %>" onclick="toggleTimerAction(<%= timer.id %>)" data-running="<%= timer.is_running %>">
+                <%= timer.is_running ? '⏸' : '▶' %>
+              </button>
               <button class="timer-btn" onclick="resetTimerAction(<%= timer.id %>)">↻</button>
             </div>
             <% if timer.alarm_seconds %>
@@ -78,6 +79,17 @@
   }
 
   // Timer actions
+  function toggleTimerAction(timerId) {
+    const toggleBtn = document.getElementById(`toggle-btn-${timerId}`);
+    const isRunning = toggleBtn.getAttribute('data-running') === 'true';
+    
+    if (isRunning) {
+      pauseTimerAction(timerId);
+    } else {
+      startTimerAction(timerId);
+    }
+  }
+
   function startTimerAction(timerId) {
     fetch(`/timers/${timerId}/start`, {
       method: 'PATCH',
@@ -91,6 +103,7 @@
     .then(data => {
       console.log('Timer started:', data);
       startClientTimer(timerId);
+      updateToggleButton(timerId, true);
     })
     .catch(error => console.error('Error:', error));
   }
@@ -108,8 +121,17 @@
     .then(data => {
       console.log('Timer paused:', data);
       stopClientTimer(timerId);
+      updateToggleButton(timerId, false);
     })
     .catch(error => console.error('Error:', error));
+  }
+
+  function updateToggleButton(timerId, isRunning) {
+    const toggleBtn = document.getElementById(`toggle-btn-${timerId}`);
+    if (toggleBtn) {
+      toggleBtn.setAttribute('data-running', isRunning);
+      toggleBtn.textContent = isRunning ? '⏸' : '▶';
+    }
   }
 
   function resetTimerAction(timerId) {
@@ -126,6 +148,7 @@
       console.log('Timer reset:', data);
       stopClientTimer(timerId);
       updateTimerDisplay(timerId, data.seconds);
+      updateToggleButton(timerId, false);
     })
     .catch(error => console.error('Error:', error));
   }
@@ -177,7 +200,18 @@
 
   function checkAlarm(timerId, currentSeconds, alarmSeconds) {
     if (alarmSeconds && currentSeconds === alarmSeconds) {
-      pauseTimerAction(timerId);
+      stopClientTimer(timerId);
+      updateToggleButton(timerId, false);
+      
+      // Update server state
+      fetch(`/timers/${timerId}/pause`, {
+        method: 'PATCH',
+        headers: {
+          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      });
       
       // Browser notification
       if ('Notification' in window && Notification.permission === 'granted') {
