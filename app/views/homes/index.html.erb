@@ -14,8 +14,8 @@
       <div class="timer-header"> ⏱️ Study </div>
       <div class="timer-display" id="timer1-display">00:00:00</div>
       <div class="timer-controls">
-        <button class="timer-btn" id="toggle-btn-1" onclick="toggleTimer(1)">▶️</button>
-        <button class="timer-btn" onclick="resetTimer(1)">↪️</button>
+        <button class="timer-btn" id="toggle-btn-1" onclick="toggleTimer(1)"><i class="fa-solid fa-play"></i></button>
+        <button class="timer-btn" onclick="resetTimer(1)"><i class="fa-solid fa-reply"></i></button>
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer1-alarm" class="alarm-input" placeholder="Set Alarm">
@@ -27,8 +27,8 @@
       <div class="timer-header"> ⏱️ Break </div>
       <div class="timer-display" id="timer2-display">00:00:00</div>
       <div class="timer-controls">
-        <button class="timer-btn" id="toggle-btn-2" onclick="toggleTimer(2)">▶️</button>
-        <button class="timer-btn" onclick="resetTimer(2)">↪️</button>
+        <button class="timer-btn" id="toggle-btn-2" onclick="toggleTimer(2)"><i class="fa-solid fa-play"></i></button>
+        <button class="timer-btn" onclick="resetTimer(2)"><i class="fa-solid fa-reply"></i></button>
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer2-alarm" class="alarm-input" placeholder="Set Alarm">
@@ -167,7 +167,7 @@
   function updateToggleButton(timerNum, isRunning) {
     const toggleBtn = document.getElementById(`toggle-btn-${timerNum}`);
     if (toggleBtn) {
-      toggleBtn.textContent = isRunning ? '⏸️' : '▶️';
+      toggleBtn.innerHTML = isRunning ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
     }
   }
 
