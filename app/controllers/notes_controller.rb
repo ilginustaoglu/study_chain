@@ -49,7 +49,7 @@ class NotesController < ApplicationController
     
     respond_to do |format|
       format.html { redirect_to root_path, notice: "Note successfully deleted!" }
-      format.json { head :no_content }
+      format.json { render json: { message: "Note successfully deleted!" }, status: :ok }
     end
   end
 

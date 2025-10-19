@@ -1,7 +1,7 @@
 class HomesController < ApplicationController
   
   def index
-    @homes = Home.all
+    @notes = Note.all.order(created_at: :desc)
   end
 
   def show
@@ -41,7 +41,11 @@ class HomesController < ApplicationController
   def destroy
     @home = Home.find(params[:id])
     @home.destroy
-    redirect_to root_path, notice: "Not başarıyla silindi!"
+    
+    respond_to do |format|
+      format.html { redirect_to root_path, notice: "Not başarıyla silindi!" }
+      format.json { render json: { message: "Not başarıyla silindi!" }, status: :ok }
+    end
   end
 
   private
