@@ -1,6 +1,6 @@
 <div class="container" style="max-width: 1200px; margin: 40px auto; padding: 20px;">
   <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-    <h1 style="color: #6F4E37; font-size: 2.5em;">📚 My Study Materials</h1>
+    <h1 style="color: #6F4E37; font-size: 2.5em;"><i class="fa-solid fa-pen-to-square"></i> My Study Materials</h1>
     <%= link_to "← Home", homes_path, class: "btn-back", style: "text-decoration: none; background: #6F4E37; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;" %>
   </div>
 
@@ -87,7 +87,7 @@
 
 <!-- Floating Menu -->
 <div id="floatingMenu" style="position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 999; display: none; min-width: 250px;">
-  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">📚 Study Tools</h3>
+  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">Study Tools</h3>
   
   <%= link_to homes_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
     <span style="font-size: 1.5em;">🏠</span>
@@ -98,7 +98,7 @@
   <% end %>
   
   <%= link_to flashcard_collections_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">🎴</span>
+    <span style="font-size: 1.5em;"><i class="fa-solid fa-repeat"></i></span>
     <div>
       <strong style="display: block; font-size: 1em;">Flashcards</strong>
       <small style="color: #6F4E37;">Card collections</small>

@@ -19,7 +19,7 @@
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer1-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(1)">🔔</button>
+        <button class="alarm-btn" onclick="setAlarm(1)"><i class="fa-solid fa-bell"></i></button>
       </div>
     </div>
     
@@ -32,7 +32,7 @@
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer2-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(2)">🔔</button>
+        <button class="alarm-btn" onclick="setAlarm(2)"><i class="fa-solid fa-bell"></i></button>
       </div>
     </div>
   </div>
@@ -40,13 +40,13 @@
   <!-- Study Notes (Top Right) -->
   <div class="todo-panel">
     <div class="todo-header">
-      <h2> 📝 Notes </h2>
+      <h2> <i class="fa-solid fa-pen-to-square"></i> Notes </h2>
       <button class="btn-add" onclick="showAddForm()"> + Add New </button>
     </div>
 
     <!-- Add New Note Form -->
     <div id="addForm" class="add-form" style="display: none;">
-      <%= form_with model: Home.new, local: true, class: "todo-form" do |f| %>
+      <%= form_with model: Note.new, url: notes_path, local: true, class: "todo-form" do |f| %>
         <%= f.text_field :title, placeholder: "Title", class: "form-input", required: true %>
         <%= f.text_area :content, placeholder: "Content (details)", class: "form-textarea", rows: 3, required: true %>
         <div class="form-actions">
@@ -58,18 +58,18 @@
 
     <!-- Notes List -->
     <div class="todo-list">
-      <% if @homes.empty? %>
+      <% if @notes.empty? %>
         <p class="empty-message">No notes yet. You can add a new note using the button above.</p>
       <% else %>
-        <% @homes.each do |home| %>
-          <div class="todo-item">
-            <div class="todo-item-header" onclick="showModal(<%= home.id %>)">
-              <h3><%= home.title %></h3>
+        <% @notes.each do |note| %>
+          <div class="todo-item" id="note-<%= note.id %>">
+            <div class="todo-item-header" onclick="showModal(<%= note.id %>)">
+              <h3><%= note.title %></h3>
               <span class="click-hint">Click for details</span>
             </div>
             <div class="todo-actions">
-              <%= link_to "✏️", edit_home_path(home), class: "btn-edit", title: "Edit" %>
-              <%= link_to "🗑️", home_path(home), method: :delete, data: { confirm: "Are you sure you want to delete?" }, class: "btn-delete", title: "Delete" %>
+              <a href="#" onclick="showEditModal(<%= note.id %>); return false;" class="btn-edit" title="Edit">✏️</a>
+              <a href="#" onclick="deleteNote(<%= note.id %>); return false;" class="btn-delete" title="Delete">🗑️</a>
             </div>
           </div>
         <% end %>
@@ -89,30 +89,59 @@
 </div>
 
 <script>
+  // HTML escape function
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
   // Show modal
-  function showModal(homeId) {
+  function showModal(noteId) {
     const modal = document.getElementById('todoModal');
     const modalBody = document.getElementById('modalBody');
     
+    // Show loading
+    modalBody.innerHTML = '<div style="text-align: center; padding: 40px;"><p>Loading...</p></div>';
+    modal.style.display = 'block';
+    
     // Fetch note details via AJAX
-    fetch(`/homes/${homeId}.json`)
-      .then(response => response.json())
+    fetch(`/notes/${noteId}.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Note not found');
+        }
+        return response.json();
+      })
       .then(data => {
+        const title = escapeHtml(data.title);
+        const content = escapeHtml(data.content).replace(/\n/g, '<br>');
+        const createdAt = new Date(data.created_at).toLocaleString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
         modalBody.innerHTML = `
-          <h2>${data.title}</h2>
+          <h2>${title}</h2>
           <div class="modal-content-text">
-            <p>${data.content.replace(/\n/g, '<br>')}</p>
+            <p>${content}</p>
           </div>
           <div class="modal-footer">
-            <small>Created: ${new Date(data.created_at).toLocaleString('en-US')}</small>
+            <small>📅 Created: ${createdAt}</small>
           </div>
         `;
-        modal.style.display = 'block';
       })
       .catch(error => {
         console.error('Error:', error);
-        modalBody.innerHTML = '<p>An error occurred while loading.</p>';
-        modal.style.display = 'block';
+        modalBody.innerHTML = `
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #C85A54;">❌ Error</h3>
+            <p>${escapeHtml(error.message)}</p>
+          </div>
+        `;
       });
   }
 
@@ -146,6 +175,165 @@
       closeFloatingMenu();
     }
   });
+
+  // Show edit modal
+  function showEditModal(noteId) {
+    const modal = document.getElementById('todoModal');
+    const modalBody = document.getElementById('modalBody');
+    
+    // Show loading
+    modalBody.innerHTML = '<div style="text-align: center; padding: 40px;"><p>Loading...</p></div>';
+    modal.style.display = 'block';
+    
+    // Fetch note details via AJAX
+    fetch(`/notes/${noteId}.json`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Note not found');
+        }
+        return response.json();
+      })
+      .then(data => {
+        const title = escapeHtml(data.title);
+        const content = escapeHtml(data.content);
+        
+        modalBody.innerHTML = `
+          <h2>✏️ Edit Note</h2>
+          <form id="editForm" onsubmit="updateNote(${noteId}); return false;">
+            <div class="modal-form-group">
+              <label for="edit-title">Title</label>
+              <input type="text" id="edit-title" name="title" value="${title}" class="modal-form-control" required>
+            </div>
+            <div class="modal-form-group">
+              <label for="edit-content">Content</label>
+              <textarea id="edit-content" name="content" class="modal-form-control" rows="10" required>${content}</textarea>
+            </div>
+            <div class="modal-form-buttons">
+              <button type="submit" class="btn btn-primary">💾 Save</button>
+              <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            </div>
+          </form>
+        `;
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        modalBody.innerHTML = `
+          <div style="text-align: center; padding: 20px;">
+            <h3 style="color: #C85A54;">❌ Error</h3>
+            <p>${escapeHtml(error.message)}</p>
+          </div>
+        `;
+      });
+  }
+
+  // Update note function
+  function updateNote(noteId) {
+    const title = document.getElementById('edit-title').value;
+    const content = document.getElementById('edit-content').value;
+
+    const csrfToken = document.querySelector('[name="csrf-token"]');
+    if (!csrfToken) {
+      alert('Security token not found. Please refresh the page and try again.');
+      return;
+    }
+
+    fetch(`/notes/${noteId}`, {
+      method: 'PATCH',
+      headers: {
+        'X-CSRF-Token': csrfToken.content,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        note: {
+          title: title,
+          content: content
+        }
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Update failed');
+      }
+    })
+    .then(data => {
+      // Update in list
+      const noteElement = document.getElementById(`note-${noteId}`);
+      if (noteElement) {
+        const titleElement = noteElement.querySelector('h3');
+        if (titleElement) {
+          titleElement.textContent = data.title;
+        }
+      }
+      
+      // Close modal
+      closeModal();
+      
+      console.log('Note successfully updated');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while updating the note. Please try again.');
+    });
+  }
+
+  // Delete note function
+  function deleteNote(noteId) {
+    if (!confirm('Are you sure you want to delete this note?')) {
+      return;
+    }
+
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name="csrf-token"]');
+    if (!csrfToken) {
+      console.error('CSRF token not found');
+      alert('Security token not found. Please refresh the page and try again.');
+      return;
+    }
+
+    console.log('Deleting note with ID:', noteId);
+
+    fetch(`/notes/${noteId}`, {
+      method: 'DELETE',
+      headers: {
+        'X-CSRF-Token': csrfToken.content,
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      }
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      if (response.ok || response.status === 204) {
+        // Remove deleted note from list
+        const noteElement = document.getElementById(`note-${noteId}`);
+        if (noteElement) {
+          noteElement.style.transition = 'all 0.3s ease';
+          noteElement.style.opacity = '0';
+          noteElement.style.transform = 'translateX(50px)';
+          setTimeout(() => {
+            noteElement.remove();
+            
+            // Show empty message if list is empty
+            const todoList = document.querySelector('.todo-list');
+            const remainingNotes = todoList.querySelectorAll('.todo-item');
+            if (remainingNotes.length === 0) {
+              todoList.innerHTML = '<p class="empty-message">No notes yet. You can add a new note using the button above.</p>';
+            }
+          }, 300);
+        }
+        
+        console.log('Note successfully deleted');
+      } else {
+        throw new Error(`Delete operation failed with status: ${response.status}`);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('An error occurred while deleting the note. Please try again.');
+    });
+  }
 
   // Timer functionality
   const timers = {
@@ -269,10 +457,10 @@
     const themeText = document.getElementById('themeText');
     
     if (theme === 'dark') {
-      themeIcon.textContent = '☀️';
+      themeIcon.innerHTML = '<i class="fa-solid fa-sun"></i>';
       themeText.textContent = 'Light';
     } else {
-      themeIcon.textContent = '🌙';
+      themeIcon.innerHTML = '<i class="fa-solid fa-moon"></i>';
       themeText.textContent = 'Dark';
     }
   }
@@ -314,15 +502,15 @@
 
 <!-- Floating Menu Button -->
 <div id="floatingButton" onclick="toggleFloatingMenu()" class="floating-button">
-  <span style="color: white; font-size: 2em; font-weight: bold;">⋮</span>
+  <span style="color: white; font-size: 1.5em; font-weight: bold;"><i class="fa-solid fa-bookmark"></i></span>
 </div>
 
 <!-- Floating Menu -->
 <div id="floatingMenu" class="floating-menu">
-  <h3 class="floating-menu-title">📚 Study Tools</h3>
+  <h3 class="floating-menu-title">Study Tools</h3>
   
   <%= link_to study_materials_path, class: "menu-item" do %>
-    <span class="menu-icon">📝</span>
+    <span class="menu-icon"><i class="fa-solid fa-pen-to-square"></i></span>
     <div class="menu-text">
       <strong>My Study Materials</strong>
       <small>PDF and image upload</small>
@@ -330,7 +518,7 @@
   <% end %>
   
   <%= link_to flashcard_collections_path, class: "menu-item" do %>
-    <span class="menu-icon">🎴</span>
+    <span class="menu-icon"><i class="fa-solid fa-repeat"></i></i></span>
     <div class="menu-text">
       <strong>Flashcards</strong>
       <small>Card collections</small>
@@ -338,7 +526,7 @@
   <% end %>
   
   <%= link_to agendas_path, class: "menu-item" do %>
-    <span class="menu-icon">📅</span>
+    <span class="menu-icon"><i class="fa-solid fa-calendar-days"></i></span>
     <div class="menu-text">
       <strong>My Agenda</strong>
       <small>Event calendar</small>
@@ -346,7 +534,7 @@
   <% end %>
   
   <%= link_to reminders_path, class: "menu-item" do %>
-    <span class="menu-icon">⏰</span>
+    <span class="menu-icon"><i class="fa-solid fa-stopwatch"></i></span>
     <div class="menu-text">
       <strong>Reminders</strong>
       <small>Alarms and notes</small>

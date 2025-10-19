@@ -11,7 +11,7 @@
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer1-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(1)">🔔</button>
+        <button class="alarm-btn" onclick="setAlarm(1)"><i class="fa-solid fa-bell"></i></button>
       </div>
     </div>
     
@@ -25,7 +25,7 @@
       </div>
       <div class="timer-alarm">
         <input type="time" id="timer2-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(2)">🔔</button>
+        <button class="alarm-btn" onclick="setAlarm(2)"><i class="fa-solid fa-bell"></i></button>
       </div>
     </div>
   </div>
@@ -33,7 +33,7 @@
   <!-- Notes Panel (Top Right) -->
   <div class="todo-panel">
     <div class="todo-header">
-      <h2>📝 Study Notes</h2>
+      <h2><i class="fa-solid fa-pen-to-square"></i> Study Notes</h2>
       <button class="btn-add" onclick="showAddForm()">+ Add New</button>
     </div>
 
@@ -272,15 +272,25 @@
       return;
     }
 
+    // Get CSRF token
+    const csrfToken = document.querySelector('[name="csrf-token"]');
+    if (!csrfToken) {
+      console.error('CSRF token not found');
+      alert('Security token not found. Please refresh the page and try again.');
+      return;
+    }
+
     fetch(`/notes/${noteId}`, {
       method: 'DELETE',
       headers: {
-        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
+        'X-CSRF-Token': csrfToken.content,
+        'Content-Type': 'application/json',
         'Accept': 'application/json'
       }
     })
     .then(response => {
-      if (response.ok) {
+      console.log('Response status:', response.status);
+      if (response.ok || response.status === 204) {
         // Remove deleted note from list
         const noteElement = document.getElementById(`note-${noteId}`);
         if (noteElement) {
@@ -302,7 +312,7 @@
         // Success notification
         console.log('Note successfully deleted');
       } else {
-        throw new Error('Delete operation failed');
+        throw new Error(`Delete operation failed with status: ${response.status}`);
       }
     })
     .catch(error => {
@@ -435,7 +445,7 @@
 
 <!-- Floating Menu -->
 <div id="floatingMenu" style="position: fixed; bottom: 110px; right: 30px; background: white; border-radius: 15px; box-shadow: 0 4px 30px rgba(0,0,0,0.2); padding: 15px; z-index: 999; display: none; min-width: 250px;">
-  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">📚 Study Tools</h3>
+  <h3 style="color: #6F4E37; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #8B6F47; font-size: 1.1em;">Study Tools</h3>
   
   <%= link_to homes_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
     <span style="font-size: 1.5em;">🏠</span>
@@ -446,7 +456,7 @@
   <% end %>
   
   <%= link_to study_materials_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">📝</span>
+    <span style="font-size: 1.5em;"><i class="fa-solid fa-pen-to-square"></i></span>
     <div>
       <strong style="display: block; font-size: 1em;">My Study Materials</strong>
       <small style="color: #6F4E37;">PDF and image upload</small>
@@ -454,7 +464,7 @@
   <% end %>
   
   <%= link_to flashcard_collections_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; margin-bottom: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">🎴</span>
+    <span style="font-size: 1.5em;"><i class="fa-solid fa-repeat"></i></span>
     <div>
       <strong style="display: block; font-size: 1em;">Flashcards</strong>
       <small style="color: #6F4E37;">Card collections</small>
@@ -470,7 +480,7 @@
   <% end %>
   
   <%= link_to reminders_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;">⏰</span>
+    <span style="font-size: 1.5em;"><i class="fa-solid fa-alarm-clock"></i></span>
     <div>
       <strong style="display: block; font-size: 1em;">Reminders</strong>
       <small style="color: #6F4E37;">Alarms and notes</small>
