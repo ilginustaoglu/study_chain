@@ -1,4 +1,6 @@
 class FlashcardCollectionsController < ApplicationController
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
   before_action :set_collection, only: [:show, :edit, :update, :destroy, :add_card, :remove_card]
 
   def index

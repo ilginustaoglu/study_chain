@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #4A90E2 0%, #5CA9FB 100%);
+      color: white;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+    .header .icon {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+    .content {
+      padding: 40px 30px;
+    }
+    .content p {
+      color: #2c3e50;
+      font-size: 16px;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+    .code-box {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e1e8ed 100%);
+      border: 3px solid #4A90E2;
+      border-radius: 12px;
+      padding: 30px;
+      margin: 35px 0;
+      text-align: center;
+    }
+    .code-label {
+      font-size: 14px;
+      color: #5b7c99;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+    }
+    .code {
+      font-size: 48px;
+      font-weight: 700;
+      color: #4A90E2;
+      letter-spacing: 8px;
+      font-family: 'Courier New', monospace;
+      text-align: center;
+      user-select: all;
+    }
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 15px 20px;
+      margin: 25px 0;
+      border-radius: 4px;
+    }
+    .warning-box p {
+      color: #856404;
+      font-size: 14px;
+      margin: 0;
+    }
+    .info-list {
+      background: #f5f7fa;
+      border-radius: 8px;
+      padding: 20px 25px;
+      margin: 25px 0;
+    }
+    .info-list li {
+      color: #2c3e50;
+      font-size: 14px;
+      line-height: 1.8;
+      margin: 8px 0;
+    }
+    .footer {
+      background: #f5f7fa;
+      padding: 20px 30px;
+      text-align: center;
+      color: #8a92a3;
+      font-size: 14px;
+    }
+    .divider {
+      height: 1px;
+      background: #e1e8ed;
+      margin: 30px 0;
+    }
+    .highlight {
+      color: #4A90E2;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="icon">🔐</div>
+      <h1>Verify Your Email</h1>
+    </div>
+    
+    <div class="content">
+      <p>Hello <strong><%= @user.name %></strong>,</p>
+      
+      <p>Welcome to <span class="highlight">StudyChain</span>! To complete your registration and secure your account, please use the verification code below:</p>
+      
+      <div class="code-box">
+        <div class="code-label">Your Verification Code</div>
+        <div class="code"><%= @code %></div>
+      </div>
+      
+      <div class="warning-box">
+        <p><strong>⏱️ This code will expire in 30 minutes.</strong></p>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <p><strong>Important Security Information:</strong></p>
+      
+      <div class="info-list">
+        <ul style="margin: 0; padding-left: 20px;">
+          <li>✅ Enter this code on the verification page to activate your account</li>
+          <li>🔒 Never share this code with anyone</li>
+          <li>⏰ This code is valid for 30 minutes only</li>
+          <li>🚫 If you didn't request this code, please ignore this email</li>
+        </ul>
+      </div>
+      
+      <div class="divider"></div>
+      
+      <p style="font-size: 14px; color: #8a92a3;">
+        If you didn't create an account with StudyChain, please disregard this email. Your email address may have been entered by mistake.
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p><strong>© 2025 StudyChain</strong></p>
+      <p>Manage your learning journey efficiently</p>
+      <p style="margin-top: 15px; font-size: 12px;">This is an automated email, please do not reply.</p>
+    </div>
+  </div>
+</body>
+</html>

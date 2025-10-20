@@ -1,4 +1,6 @@
 class RemindersController < ApplicationController
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
   before_action :set_reminder, only: [:show, :edit, :update, :destroy, :toggle_alarm]
 
   def index

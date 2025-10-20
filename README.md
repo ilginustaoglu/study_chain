@@ -1,28 +1,224 @@
-<<<<<<< HEAD
-# README
+# StudyChain 📚
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A comprehensive study management platform built with Ruby on Rails, designed to help students organize their learning journey with powerful tools and features.
 
-Things you may want to cover:
+## Features
 
-* Ruby version
+### 📝 Note Management
+- Create, edit, and organize study notes
+- Rich text content support
+- Quick note creation and editing
+- Search and filter capabilities
 
-* System dependencies
+### ⏱️ Pomodoro Timers
+- Multiple customizable timers
+- Pomodoro technique support
+- Start, pause, and reset functionality
+- Alarm notifications
 
-* Configuration
+### 📖 Study Materials
+- Upload and organize study materials
+- File attachment support
+- Categorization by subject
+- Easy access to learning resources
 
-* Database creation
+### 🎴 Flashcard Collections
+- Create flashcard collections for different topics
+- Add multiple flashcards per collection
+- Study mode for effective learning
+- Track your progress
 
-* Database initialization
+### 📅 Agenda & Calendar
+- Plan your study schedule
+- Event management with dates
+- Stay organized with upcoming tasks
 
-* How to run the test suite
+### ⏰ Reminders
+- Set study reminders
+- Toggle alarm status
+- Never miss important study sessions
 
-* Services (job queues, cache servers, search engines, etc.)
+### 👥 User Authentication & Authorization
+StudyChain includes a complete user management system with three user roles:
 
-* Deployment instructions
+- **Admin**: Full system access with user management capabilities
+- **Premium**: Access to all study features
+- **Normal**: Limited access with option to upgrade
 
-* ...
-=======
-# study_chain
->>>>>>> 717eb8a85ce3457bd7a984573d3315c919d7abed
+For detailed information, see [USER_AUTHENTICATION.md](USER_AUTHENTICATION.md)
+
+## Tech Stack
+
+- **Framework**: Ruby on Rails 6.1.7
+- **Ruby Version**: 2.7.7
+- **Database**: PostgreSQL
+- **Authentication**: Devise
+- **Asset Pipeline**: Webpacker
+- **Styling**: SCSS with modern gradients and animations
+- **JavaScript**: Vanilla JS with Turbolinks
+
+## Setup Instructions
+
+### Prerequisites
+- Ruby 2.7.7
+- PostgreSQL
+- Node.js and Yarn
+
+### Installation
+
+1. Clone the repository
+   ```bash
+   git clone https://github.com/yourusername/study_chain.git
+   cd study_chain
+   ```
+
+2. Install dependencies
+   ```bash
+   bundle install
+   yarn install
+   ```
+
+3. Setup database
+   ```bash
+   rails db:create
+   rails db:migrate
+   rails db:seed
+   ```
+
+4. Start the server
+   ```bash
+   rails server
+   ```
+
+5. Visit `http://localhost:3000`
+
+### Default Users (after seeding)
+
+- **Admin**: admin@studychain.com / password123
+- **Premium**: premium@studychain.com / password123
+- **Normal**: user@studychain.com / password123
+
+## Project Structure
+
+```
+app/
+├── controllers/     # Application controllers
+├── models/         # ActiveRecord models
+├── views/          # ERB templates
+├── assets/         # Stylesheets and images
+├── javascript/     # JavaScript files
+└── helpers/        # View helpers
+
+config/
+├── routes.rb       # Application routes
+└── initializers/   # Configuration files
+
+db/
+├── migrate/        # Database migrations
+└── seeds.rb        # Seed data
+```
+
+## Key Models
+
+- **User**: Authentication and role management
+- **Note**: Study notes
+- **Timer**: Pomodoro timers
+- **StudyMaterial**: Uploaded study resources
+- **FlashcardCollection**: Flashcard sets
+- **Flashcard**: Individual flashcards
+- **Agenda**: Calendar events
+- **Reminder**: Study reminders
+
+## Admin Panel
+
+Administrators have access to a powerful admin dashboard:
+- User management
+- Role assignment
+- System statistics
+- Content overview
+
+Access at: `/admin`
+
+## Development
+
+### Running Tests
+```bash
+rails test
+```
+
+### Code Style
+This project follows standard Ruby and Rails conventions.
+
+### Database Migrations
+```bash
+# Create a new migration
+rails generate migration MigrationName
+
+# Run migrations
+rails db:migrate
+
+# Rollback
+rails db:rollback
+```
+
+## Deployment
+
+### Production Setup
+1. Set environment variables
+2. Precompile assets: `rails assets:precompile`
+3. Run migrations: `rails db:migrate RAILS_ENV=production`
+4. Start the server with your preferred method (Puma, Passenger, etc.)
+
+## Features in Detail
+
+### Authentication System
+- Secure password encryption
+- Session management
+- Remember me functionality
+- Profile management
+- Role-based access control
+
+### Modern UI/UX
+- Gradient designs
+- Smooth animations
+- Responsive layouts
+- Mobile-friendly interface
+- Toast notifications
+- Dark mode ready
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## License
+
+This project is private and proprietary.
+
+## Support
+
+For support, please contact the development team or open an issue in the repository.
+
+## Roadmap
+
+### Upcoming Features
+- [ ] Email verification
+- [ ] Password reset via email
+- [ ] Study statistics and analytics
+- [ ] Collaborative study groups
+- [ ] Mobile applications
+- [ ] API for third-party integrations
+- [ ] Advanced flashcard algorithms
+- [ ] Study streak tracking
+
+## Acknowledgments
+
+Built with ❤️ using Ruby on Rails and modern web technologies.
+
+---
+
+**Version**: 1.0.0  
+**Last Updated**: October 2025
