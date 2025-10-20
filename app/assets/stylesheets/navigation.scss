@@ -232,6 +232,20 @@
   }
 }
 
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+}
+
+.flash-container.fade-out {
+  animation: fadeOut 0.5s ease-out forwards;
+}
+
 // Responsive design
 @media (max-width: 768px) {
   .main-nav {
