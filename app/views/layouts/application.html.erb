@@ -102,6 +102,36 @@
       </div>
     <% end %>
 
+    <script>
+      // Auto-hide flash messages after 3 seconds
+      document.addEventListener('DOMContentLoaded', function() {
+        const flashContainers = document.querySelectorAll('.flash-container');
+        
+        flashContainers.forEach(function(container) {
+          setTimeout(function() {
+            container.classList.add('fade-out');
+            setTimeout(function() {
+              container.remove();
+            }, 500); // Wait for animation to complete
+          }, 1700); // Show for 1.7 seconds
+        });
+      });
+
+      // Also handle Turbolinks page loads
+      document.addEventListener('turbolinks:load', function() {
+        const flashContainers = document.querySelectorAll('.flash-container');
+        
+        flashContainers.forEach(function(container) {
+          setTimeout(function() {
+            container.classList.add('fade-out');
+            setTimeout(function() {
+              container.remove();
+            }, 500);
+          }, 3000);
+        });
+      });
+    </script>
+
     <%= yield %>
   </body>
 </html>
