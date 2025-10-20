@@ -87,21 +87,20 @@
 .hero-container {
   max-width: 1200px;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  display: flex;
+  justify-content: center;
   align-items: center;
   position: relative;
   z-index: 1;
-
-  @media (max-width: 968px) {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+  width: 100%;
 }
 
 .hero-content {
   color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
 
 .hero-badge {
@@ -123,6 +122,53 @@
 
   @media (max-width: 768px) {
     font-size: 48px;
+  }
+
+  // Animated brand styles
+  &.animated-brand {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    .brand-letter {
+      display: inline-block;
+      color: white;
+      text-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.6),
+        0 0 40px rgba(255, 255, 255, 0.4),
+        0 0 60px rgba(255, 255, 255, 0.3),
+        0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+      margin: 0 2px;
+      opacity: 0;
+      transform: translateX(-30px);
+      animation: slideInFromLeft 0.6s ease-out forwards;
+
+      [data-theme="dark"] & {
+        color: #e0e0e0;
+        text-shadow: 
+          0 0 20px rgba(224, 224, 224, 0.6),
+          0 0 40px rgba(224, 224, 224, 0.4),
+          0 0 60px rgba(224, 224, 224, 0.3),
+          0 5px 15px rgba(0, 0, 0, 0.5);
+      }
+
+      // Staggered animation delay for each letter (left to right)
+      @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{($i - 1) * 0.08}s;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-10px) scale(1.15);
+        text-shadow: 
+          0 0 30px rgba(255, 255, 255, 0.8),
+          0 0 60px rgba(255, 255, 255, 0.6),
+          0 0 90px rgba(255, 255, 255, 0.4),
+          0 10px 25px rgba(0, 0, 0, 0.4);
+      }
+    }
   }
 }
 
@@ -293,6 +339,20 @@
   }
   50% {
     transform: translateY(-10px);
+  }
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
