@@ -393,11 +393,41 @@
   function toggleFloatingMenu() {
     const menu = document.getElementById('floatingMenu');
     const isVisible = menu.style.display === 'block';
-    menu.style.display = isVisible ? 'none' : 'block';
+    
+    if (isVisible) {
+      closeFloatingMenu();
+    } else {
+      openFloatingMenu();
+    }
+  }
+
+  function openFloatingMenu() {
+    const menu = document.getElementById('floatingMenu');
+    const items = menu.querySelectorAll('.menu-item');
+    
+    menu.style.display = 'block';
+    void menu.offsetWidth;
+    
+    setTimeout(() => {
+      menu.classList.add('show');
+      items.forEach(item => {
+        item.classList.add('animate');
+      });
+    }, 10);
   }
 
   function closeFloatingMenu() {
-    document.getElementById('floatingMenu').style.display = 'none';
+    const menu = document.getElementById('floatingMenu');
+    const items = menu.querySelectorAll('.menu-item');
+    
+    menu.classList.remove('show');
+    items.forEach(item => {
+      item.classList.remove('animate');
+    });
+    
+    setTimeout(() => {
+      menu.style.display = 'none';
+    }, 300);
   }
 
   // Close menu when clicking outside
@@ -416,6 +446,42 @@
       closeFloatingMenu();
     }
   });
+
+  // Hover functionality for floating button
+  (function() {
+    const button = document.getElementById('floatingButton');
+    const menu = document.getElementById('floatingMenu');
+    
+    if (button && menu) {
+      // Show menu on button hover
+      button.addEventListener('mouseenter', function() {
+        openFloatingMenu();
+      });
+      
+      // Keep menu open when hovering over menu
+      menu.addEventListener('mouseenter', function() {
+        openFloatingMenu();
+      });
+      
+      // Close menu when leaving button (if not entering menu)
+      button.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!menu.matches(':hover') && !button.matches(':hover')) {
+            closeFloatingMenu();
+          }
+        }, 100);
+      });
+      
+      // Close menu when leaving menu (if not entering button)
+      menu.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+          if (!menu.matches(':hover') && !button.matches(':hover')) {
+            closeFloatingMenu();
+          }
+        }, 100);
+      });
+    }
+  })();
 </script>
 
 <!-- Floating Menu Button -->

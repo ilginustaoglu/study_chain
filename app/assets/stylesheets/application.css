@@ -1108,7 +1108,25 @@ textarea.modal-form-control {
   display: none;
   min-width: 250px;
   border: 1px solid var(--border-color);
-  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating-menu.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+@keyframes menuItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .floating-menu-title {
@@ -1128,8 +1146,22 @@ textarea.modal-form-control {
   color: var(--text-primary);
   border-radius: 8px;
   margin-bottom: 8px;
-  transition: background 0.2s;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateX(20px);
 }
+
+.menu-item.animate {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.menu-item:nth-child(1) { animation-delay: 0.05s; }
+.menu-item:nth-child(2) { animation-delay: 0.1s; }
+.menu-item:nth-child(3) { animation-delay: 0.15s; }
+.menu-item:nth-child(4) { animation-delay: 0.2s; }
+.menu-item:nth-child(5) { animation-delay: 0.25s; }
+.menu-item:nth-child(6) { animation-delay: 0.3s; }
+.menu-item:nth-child(7) { animation-delay: 0.35s; }
 
 .menu-item:hover {
   background: var(--bg-tertiary);

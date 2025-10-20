@@ -1,20 +1,66 @@
-<div class="container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
-  <h1 style="color: #6F4E37; font-size: 2.5em; margin-bottom: 30px;"><i class="fa-solid fa-repeat"></i> New Flashcard Collection</h1>
+<!-- Theme Switcher -->
+<div class="theme-switcher">
+  <span class="theme-switcher-label">Theme:</span>
+  <button class="theme-toggle-button" onclick="toggleTheme()">
+    <span class="theme-icon" id="themeIcon">🌙</span>
+    <span id="themeText">Dark</span>
+  </button>
+</div>
 
-  <%= form_with model: @collection, local: true, style: "background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);" do |f| %>
+<div class="container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
+  <h1 style="color: var(--text-primary); font-size: 2.5em; margin-bottom: 30px;"><i class="fa-solid fa-repeat"></i> New Flashcard Collection</h1>
+
+  <%= form_with model: @collection, local: true, style: "background: var(--bg-secondary); padding: 30px; border-radius: 10px; box-shadow: var(--shadow-md);" do |f| %>
     <div style="margin-bottom: 20px;">
-      <%= f.label :title, "Collection Name *", style: "display: block; font-weight: bold; color: #6F4E37; margin-bottom: 5px;" %>
-      <%= f.text_field :title, required: true, placeholder: "e.g., English Vocabulary", style: "width: 100%; padding: 12px; border: 2px solid #8B6F47; border-radius: 5px; font-size: 1em;" %>
+      <%= f.label :title, "Collection Name *", style: "display: block; font-weight: bold; color: var(--text-primary); margin-bottom: 5px;" %>
+      <%= f.text_field :title, required: true, placeholder: "e.g., English Vocabulary", style: "width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 5px; font-size: 1em; background: var(--bg-tertiary); color: var(--text-primary);" %>
     </div>
 
     <div style="margin-bottom: 20px;">
-      <%= f.label :description, "Description", style: "display: block; font-weight: bold; color: #6F4E37; margin-bottom: 5px;" %>
-      <%= f.text_area :description, rows: 4, placeholder: "A brief description about this collection...", style: "width: 100%; padding: 12px; border: 2px solid #8B6F47; border-radius: 5px; font-size: 1em;" %>
+      <%= f.label :description, "Description", style: "display: block; font-weight: bold; color: var(--text-primary); margin-bottom: 5px;" %>
+      <%= f.text_area :description, rows: 4, placeholder: "A brief description about this collection...", style: "width: 100%; padding: 12px; border: 2px solid var(--border-color); border-radius: 5px; font-size: 1em; background: var(--bg-tertiary); color: var(--text-primary);" %>
     </div>
 
     <div style="display: flex; gap: 15px; margin-top: 30px;">
-      <%= f.submit "Create", style: "flex: 1; background: #6F4E37; color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer;" %>
-      <%= link_to "Cancel", flashcard_collections_path, style: "flex: 1; text-align: center; background: #6F4E37; color: white; padding: 15px; border-radius: 8px; text-decoration: none; font-size: 1.1em; font-weight: bold; display: block;" %>
+      <%= f.submit "Create", class: "btn btn-primary", style: "flex: 1; background: var(--accent-primary); color: white; padding: 15px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer;" %>
+      <%= link_to "Cancel", flashcard_collections_path, class: "btn btn-secondary", style: "flex: 1; text-align: center; background: var(--btn-secondary-bg); color: var(--btn-secondary-text); padding: 15px; border-radius: 8px; text-decoration: none; font-size: 1.1em; font-weight: bold; display: block;" %>
     </div>
   <% end %>
 </div>
+
+<script>
+  // Theme switcher functionality
+  function getTheme() {
+    return localStorage.getItem('theme') || 'light';
+  }
+
+  function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    updateThemeButton(theme);
+  }
+
+  function updateThemeButton(theme) {
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+    
+    if (theme === 'dark') {
+      themeIcon.innerHTML = '<i class="fa-solid fa-sun"></i>';
+      themeText.textContent = 'Light';
+    } else {
+      themeIcon.innerHTML = '<i class="fa-solid fa-moon"></i>';
+      themeText.textContent = 'Dark';
+    }
+  }
+
+  function toggleTheme() {
+    const currentTheme = getTheme();
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+  }
+
+  (function initTheme() {
+    const savedTheme = getTheme();
+    setTheme(savedTheme);
+  })();
+</script>
