@@ -1,7 +1,12 @@
 class HomesController < ApplicationController
+  before_action :require_authenticated_user
   
   def index
-    @notes = Note.all.order(created_at: :desc)
+    @notes = if current_user.premium? || current_user.admin?
+      Note.all.order(created_at: :desc)
+    else
+      Note.none
+    end
   end
 
   def show

@@ -1,4 +1,7 @@
 class TimersController < ApplicationController
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
+
   def index
     @timers = Timer.all.order(created_at: :asc)
   end

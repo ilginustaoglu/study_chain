@@ -1,0 +1,178 @@
+<div class="landing-page">
+  <!-- Theme Toggle for Landing Page -->
+  <button class="landing-theme-toggle" onclick="toggleTheme()" title="Toggle Theme">
+    <span class="theme-icon" id="themeIcon">🌙</span>
+  </button>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">📚 Welcome to</div>
+        <h1 class="hero-title">StudyChain</h1>
+        <p class="hero-subtitle">Your all-in-one platform to manage your learning journey efficiently</p>
+        <p class="hero-description">
+          Organize your notes, track study time, create flashcards, and stay on top of your academic goals with our comprehensive study management system.
+        </p>
+        
+        <div class="hero-actions">
+          <%= link_to new_user_registration_path, class: 'btn-hero btn-primary' do %>
+            <span class="btn-icon">🚀</span>
+            Get Started Free
+          <% end %>
+          <%= link_to new_user_session_path, class: 'btn-hero btn-secondary' do %>
+            <span class="btn-icon">🔑</span>
+            Sign In
+          <% end %>
+        </div>
+        
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">📝</div>
+            <div class="stat-label">Notes Management</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">⏱️</div>
+            <div class="stat-label">Study Timers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">🎯</div>
+            <div class="stat-label">Task Planning</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="hero-illustration">
+        <div class="illustration-card card-1">
+          <div class="card-icon">📚</div>
+          <div class="card-title">Notes</div>
+        </div>
+        <div class="illustration-card card-2">
+          <div class="card-icon">⏰</div>
+          <div class="card-title">Timers</div>
+        </div>
+        <div class="illustration-card card-3">
+          <div class="card-icon">📋</div>
+          <div class="card-title">Agenda</div>
+        </div>
+        <div class="illustration-card card-4">
+          <div class="card-icon">🔔</div>
+          <div class="card-title">Reminders</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section">
+    <div class="features-container">
+      <div class="section-header">
+        <h2 class="section-title">Everything You Need to Succeed</h2>
+        <p class="section-subtitle">Powerful features designed to enhance your learning experience</p>
+      </div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">Smart Notes</h3>
+          <p class="feature-description">Create, organize, and manage your study notes with rich text formatting and easy categorization.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">⏱️</div>
+          <h3 class="feature-title">Study Timers</h3>
+          <p class="feature-description">Track your study sessions with customizable timers. Stay focused and monitor your productivity.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🎴</div>
+          <h3 class="feature-title">Flashcards</h3>
+          <p class="feature-description">Create flashcard collections for effective memorization and quick review sessions.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <h3 class="feature-title">Study Materials</h3>
+          <p class="feature-description">Store and access all your study materials in one organized place.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📅</div>
+          <h3 class="feature-title">Agenda Planning</h3>
+          <p class="feature-description">Plan your study schedule and keep track of upcoming assignments and deadlines.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3 class="feature-title">Smart Reminders</h3>
+          <p class="feature-description">Never miss important deadlines with customizable reminders and notifications.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-container">
+      <div class="cta-content">
+        <h2 class="cta-title">Ready to Transform Your Study Habits?</h2>
+        <p class="cta-subtitle">Join StudyChain today and take control of your learning journey</p>
+        <div class="cta-actions">
+          <%= link_to "Start Learning Now →", new_user_registration_path, class: 'btn-cta' %>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="landing-footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>StudyChain</h3>
+          <p>Manage your learning journey efficiently</p>
+        </div>
+        <div class="footer-links">
+          <div class="footer-section">
+            <h4>Get Started</h4>
+            <ul>
+              <li><%= link_to "Sign Up", new_user_registration_path %></li>
+              <li><%= link_to "Sign In", new_user_session_path %></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 StudyChain. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // Theme toggle functionality
+  function toggleTheme() {
+    const html = document.documentElement;
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    
+    updateThemeIcon(newTheme);
+  }
+
+  function updateThemeIcon(theme) {
+    const themeIcon = document.getElementById('themeIcon');
+    if (themeIcon) {
+      themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+    }
+  }
+
+  // Initialize theme on page load
+  document.addEventListener('DOMContentLoaded', function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+  });
+</script>

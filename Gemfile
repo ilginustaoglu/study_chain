@@ -22,6 +22,12 @@ gem 'jbuilder', '~> 2.7'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
+# Authentication
+gem 'devise', '~> 4.9'
+
+# reCAPTCHA for bot protection
+gem 'recaptcha', '~> 5.12'
+
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
 
@@ -41,6 +47,9 @@ group :development do
   gem 'rack-mini-profiler', '~> 2.0'
   gem 'listen', '~> 3.3'
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+  
+  # Email testing - opens emails in browser
+  gem 'letter_opener', '~> 1.8'
 end
 
 group :test do

@@ -30,8 +30,19 @@
       <div style="margin-bottom: 20px; padding: 15px; background: var(--bg-tertiary); border-radius: 8px; border: 1px solid var(--border-color);">
         <h4 style="color: var(--text-primary); margin-bottom: 10px;">Current Files:</h4>
         <% @study_material.files.each do |file| %>
-          <div style="padding: 8px; background: var(--bg-secondary); margin-bottom: 5px; border-radius: 5px; color: var(--text-secondary);">
-            <%= file.filename %>
+          <div style="padding: 10px; background: var(--bg-secondary); margin-bottom: 8px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+            <div style="color: var(--text-primary);">
+              <% if file.content_type == 'application/pdf' %>
+                <span style="font-size: 1.2em;">📄</span>
+              <% elsif file.content_type.start_with?('image/') %>
+                <span style="font-size: 1.2em;">🖼️</span>
+              <% else %>
+                <span style="font-size: 1.2em;">📎</span>
+              <% end %>
+              <strong style="margin-left: 8px;"><%= file.filename %></strong>
+              <span style="color: var(--text-secondary); margin-left: 8px; font-size: 0.9em;">(<%= number_to_human_size(file.byte_size) %>)</span>
+            </div>
+            <%= link_to "🗑️ Delete", remove_file_study_material_path(@study_material, file_id: file.id), method: :delete, data: { confirm: "Are you sure you want to delete this file?" }, style: "background: #e74c3c; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.9em;" %>
           </div>
         <% end %>
       </div>

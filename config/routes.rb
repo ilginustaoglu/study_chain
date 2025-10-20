@@ -1,4 +1,22 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+    registrations: 'users/registrations',
+    sessions: 'users/sessions'
+  }
+  
+  # Email verification with code (disabled for now)
+  # get 'verify', to: 'verifications#new', as: 'new_verification'
+  # post 'verify', to: 'verifications#verify', as: 'verify'
+  # post 'verify/resend', to: 'verifications#resend', as: 'resend_verification'
+  
+  # Admin routes
+  namespace :admin do
+    get '/', to: 'admin#index', as: 'dashboard'
+    get 'users', to: 'admin#users'
+    patch 'users/:id/role', to: 'admin#update_user_role', as: 'update_user_role'
+    delete 'users/:id', to: 'admin#delete_user', as: 'delete_user'
+  end
+  
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   resources :notes
@@ -13,7 +31,11 @@ Rails.application.routes.draw do
     end
   end
   
-  resources :study_materials
+  resources :study_materials do
+    member do
+      delete :remove_file
+    end
+  end
   
   resources :flashcard_collections do
     member do
@@ -30,5 +52,13 @@ Rails.application.routes.draw do
     end
   end
   
-  root "homes#index"  
+  # Landing page for non-authenticated users
+  get 'landing', to: 'landing#index', as: 'landing'
+  
+  # Root path - redirect based on authentication
+  authenticated :user do
+    root 'homes#index', as: :authenticated_root
+  end
+  
+  root 'landing#index'
 end

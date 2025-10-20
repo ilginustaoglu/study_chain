@@ -1,4 +1,7 @@
 class NotesController < ApplicationController
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
+
   def index
     @notes = Note.all.order(created_at: :desc)
   end

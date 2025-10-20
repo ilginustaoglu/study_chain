@@ -1,4 +1,6 @@
 class AgendasController < ApplicationController
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
   before_action :set_agenda, only: [:show, :edit, :update, :destroy]
 
   def index

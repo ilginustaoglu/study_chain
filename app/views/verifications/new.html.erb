@@ -1,0 +1,129 @@
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="verification-icon">📧</div>
+    <h2>Verify Your Email</h2>
+    <p class="auth-subtitle">We've sent a 6-digit verification code to <strong><%= @email %></strong></p>
+
+    <%= form_with url: verify_path, method: :post, html: { class: 'auth-form' } do |f| %>
+      <%= hidden_field_tag :email, @email %>
+      
+      <div class="form-group">
+        <%= label_tag :code, "Verification Code" %>
+        <%= text_field_tag :code, nil, 
+            autofocus: true, 
+            class: 'form-control verification-code-input', 
+            placeholder: '000000',
+            maxlength: 6,
+            pattern: '[0-9]{6}',
+            inputmode: 'numeric',
+            autocomplete: 'off' %>
+        <p class="field-hint">Enter the 6-digit code from your email</p>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Verify Email", class: 'btn btn-primary btn-block' %>
+      </div>
+    <% end %>
+
+    <div class="auth-links verification-links">
+      <p>Didn't receive the code?</p>
+      <%= link_to "📨 Resend Verification Code", resend_verification_path(email: @email), method: :post, class: 'resend-link' %>
+      <div class="divider-text">or</div>
+      <%= link_to "← Back to Sign Up", new_user_registration_path %>
+    </div>
+  </div>
+</div>
+
+<style>
+.verification-icon {
+  font-size: 64px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.verification-code-input {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 8px;
+  font-family: 'Courier New', monospace;
+  padding: 20px !important;
+}
+
+.verification-code-input::-webkit-inner-spin-button,
+.verification-code-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.verification-links {
+  margin-top: 30px;
+}
+
+.verification-links p {
+  margin-bottom: 15px;
+  color: #5b7c99;
+  font-size: 14px;
+}
+
+.resend-link {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.1) 0%, rgba(92, 169, 251, 0.1) 100%);
+  color: var(--accent-primary);
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid var(--accent-primary);
+}
+
+.resend-link:hover {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+}
+
+.divider-text {
+  margin: 20px 0;
+  text-align: center;
+  position: relative;
+  color: #8a92a3;
+  font-size: 14px;
+}
+
+.divider-text::before,
+.divider-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 40%;
+  height: 1px;
+  background: #e1e8ed;
+}
+
+.divider-text::before {
+  left: 0;
+}
+
+.divider-text::after {
+  right: 0;
+}
+
+[data-theme="dark"] .verification-code-input {
+  background: #1a2332;
+  color: #e0e0e0;
+  border-color: #3d4f63;
+}
+
+[data-theme="dark"] .resend-link {
+  background: rgba(92, 169, 251, 0.1);
+  border-color: var(--accent-primary);
+}
+
+[data-theme="dark"] .resend-link:hover {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+}
+</style>
+

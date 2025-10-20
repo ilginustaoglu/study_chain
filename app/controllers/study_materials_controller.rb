@@ -1,5 +1,7 @@
 class StudyMaterialsController < ApplicationController
-  before_action :set_study_material, only: [:show, :edit, :update, :destroy]
+  before_action :require_authenticated_user
+  before_action :require_premium_or_admin
+  before_action :set_study_material, only: [:show, :edit, :update, :destroy, :remove_file]
 
   def index
     @study_materials = StudyMaterial.all.order(created_at: :desc)
@@ -40,6 +42,12 @@ class StudyMaterialsController < ApplicationController
   def destroy
     @study_material.destroy
     redirect_to study_materials_path, notice: 'Ders notu silindi.'
+  end
+
+  def remove_file
+    file = @study_material.files.find(params[:file_id])
+    file.purge
+    redirect_to study_material_path(@study_material), notice: 'Dosya başarıyla silindi.'
   end
 
   private
