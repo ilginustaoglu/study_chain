@@ -2,7 +2,7 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
+         :recoverable, :rememberable, :validatable, :timeoutable
 
   # Role enum: normal users have limited access, premium users have full access, admin has all permissions
   enum role: { normal: 0, premium: 1, admin: 2 }
@@ -52,5 +52,27 @@ class User < ApplicationRecord
 
   def normal?
     role == 'normal'
+  end
+
+  # Persistent session methods
+  def enable_persistent_session!
+    update(persistent_session: true)
+  end
+
+  def disable_persistent_session!
+    update(persistent_session: false)
+  end
+
+  def has_persistent_session?
+    persistent_session
+  end
+
+  # Override Devise timeout check - don't timeout if persistent_session is enabled
+  def timeout_in
+    if has_persistent_session?
+      nil  # Never timeout
+    else
+      30.minutes  # Default timeout for non-persistent sessions
+    end
   end
 end

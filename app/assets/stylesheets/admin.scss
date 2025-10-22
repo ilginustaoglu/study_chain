@@ -251,6 +251,41 @@
         }
       }
 
+      .session-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 12px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        text-transform: uppercase;
+        white-space: nowrap;
+
+        &.persistent {
+          background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+          color: #1a5335;
+          
+          [data-theme="dark"] & {
+            color: #0d2419;
+          }
+        }
+
+        &.temporary {
+          background: #ffeaa7;
+          color: #856404;
+          
+          [data-theme="dark"] & {
+            background: #ddb26f;
+            color: #4a3200;
+          }
+        }
+
+        i {
+          font-size: 11px;
+        }
+      }
+
       .role-form {
         display: inline-flex;
         gap: 5px;
@@ -296,6 +331,23 @@
 
           &:hover {
             background: var(--accent-hover);
+          }
+        }
+
+        &.btn-warning {
+          background: #f39c12;
+          color: white;
+
+          [data-theme="dark"] & {
+            background: #e67e22;
+          }
+
+          &:hover {
+            background: #e67e22;
+
+            [data-theme="dark"] & {
+              background: #d35400;
+            }
           }
         }
 

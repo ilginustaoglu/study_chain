@@ -1,7 +1,29 @@
+<!-- Landing Page Overlay Navbar -->
+<nav class="landing-nav">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <%= link_to root_path, class: "brand-link" do %>
+        <i class="fa-solid fa-link"></i> StudyChain
+      <% end %>
+    </div>
+    
+    <div class="nav-menu">
+      <!-- Theme Switcher -->
+      <button class="theme-toggle-nav" onclick="toggleTheme()" title="Toggle Theme">
+        <span class="theme-icon-nav" id="themeIcon">🌙</span>
+      </button>
+
+      <%= link_to "Login", new_user_session_path, class: "nav-link nav-link-auth" %>
+      <%= link_to "Sign Up", new_user_registration_path, class: "nav-link nav-link-auth btn-signup-nav" %>
+    </div>
+  </div>
+</nav>
+
 <div class="landing-page">
   <section class="hero-section">
     <div class="hero-container">
       <div class="hero-content">
+        <p class="welcome-text">Welcome to</p>
         <h1 class="hero-title animated-brand">
           <span class="brand-letter">S</span><span class="brand-letter">t</span><span class="brand-letter">u</span><span class="brand-letter">d</span><span class="brand-letter">y</span><span class="brand-letter">C</span><span class="brand-letter">h</span><span class="brand-letter">a</span><span class="brand-letter">i</span><span class="brand-letter">n</span>
         </h1>
@@ -11,22 +33,39 @@
 </div>
 
 <script>
-  // Theme toggle functionality
+  // Theme toggle functionality for landing page with smooth transition
   function toggleTheme() {
     const html = document.documentElement;
     const currentTheme = html.getAttribute('data-theme');
     const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
     
+    // Add transitioning class for smooth animation
+    html.classList.add('theme-transitioning');
+    
+    // Change theme
     html.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     
+    // Update icon with smooth rotation
     updateThemeIcon(newTheme);
+    
+    // Remove transitioning class after animation completes
+    setTimeout(() => {
+      html.classList.remove('theme-transitioning');
+    }, 500);
   }
 
   function updateThemeIcon(theme) {
     const themeIcon = document.getElementById('themeIcon');
     if (themeIcon) {
+      // Add rotation animation to icon
+      themeIcon.style.transform = 'rotate(360deg)';
       themeIcon.textContent = theme === 'dark' ? '☀️' : '🌙';
+      
+      // Reset rotation after animation
+      setTimeout(() => {
+        themeIcon.style.transform = 'rotate(0deg)';
+      }, 300);
     }
   }
 

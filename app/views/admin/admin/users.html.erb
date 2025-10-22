@@ -12,6 +12,7 @@
           <th>Name</th>
           <th>Email</th>
           <th>Role</th>
+          <th>Session Status</th>
           <th>Created At</th>
           <th>Actions</th>
         </tr>
@@ -27,6 +28,17 @@
                 <%= user.role.capitalize %>
               </span>
             </td>
+            <td>
+              <% if user.has_persistent_session? %>
+                <span class="session-badge persistent" title="Remember me is enabled">
+                  <i class="fas fa-lock"></i> Persistent
+                </span>
+              <% else %>
+                <span class="session-badge temporary" title="Session will timeout after 30 minutes of inactivity">
+                  <i class="fas fa-clock"></i> Temporary
+                </span>
+              <% end %>
+            </td>
             <td><%= user.created_at.strftime("%b %d, %Y") %></td>
             <td class="actions-cell">
               <% unless user.admin? %>
@@ -35,6 +47,12 @@
                   <%= button_tag type: 'submit', class: 'btn btn-sm btn-primary' do %>
                     <i class="fas fa-check"></i> Update
                   <% end %>
+                <% end %>
+                <%= button_to admin_force_logout_user_path(user), 
+                    method: :post,
+                    data: { confirm: "Are you sure you want to force logout this user?" },
+                    class: 'btn btn-sm btn-warning' do %>
+                  <i class="fas fa-sign-out-alt"></i> Force Logout
                 <% end %>
                 <%= button_to admin_delete_user_path(user), 
                     method: :delete, 
