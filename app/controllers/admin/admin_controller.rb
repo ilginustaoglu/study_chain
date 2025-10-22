@@ -36,5 +36,23 @@ module Admin
         redirect_to admin_users_path, notice: "User deleted successfully."
       end
     end
+
+    def force_logout_user
+      @user = User.find(params[:id])
+      if @user.admin?
+        redirect_to admin_users_path, alert: "Cannot force logout admin user."
+      else
+        # Disable persistent session
+        @user.disable_persistent_session!
+        
+        # Expire all remember me tokens
+        @user.forget_me!
+        
+        # Clear remember created at (forces re-login)
+        @user.update(remember_created_at: nil)
+        
+        redirect_to admin_users_path, notice: "User session terminated. User will need to login again."
+      end
+    end
   end
 end

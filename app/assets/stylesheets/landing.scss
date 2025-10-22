@@ -1,9 +1,182 @@
 // Landing Page Styles
 
+// Smooth Theme Transition
+html[data-theme] {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Smooth transitions for theme-sensitive elements
+.landing-page *,
+.landing-nav *,
+.hero-section *,
+.features-section *,
+.cta-section *,
+.landing-footer * {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease;
+}
+
+// Landing Page Overlay Navbar
+.landing-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: linear-gradient(135deg, rgba(74, 144, 226, 0.95) 0%, rgba(92, 169, 251, 0.95) 100%);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+
+  [data-theme="dark"] & {
+    background: linear-gradient(135deg, rgba(45, 62, 80, 0.95) 0%, rgba(58, 79, 99, 0.95) 100%);
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (max-width: 768px) {
+      padding: 1rem 1.5rem;
+    }
+  }
+
+  .nav-brand {
+    .brand-link {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+
+      [data-theme="dark"] & {
+        color: #e0e0e0;
+      }
+
+      i {
+        font-size: 1.75rem;
+      }
+
+      &:hover {
+        transform: scale(1.05);
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      gap: 1rem;
+    }
+  }
+
+  .theme-toggle-nav {
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.25);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: rotate(20deg) scale(1.1);
+    }
+
+    &:active {
+      transform: rotate(20deg) scale(0.95);
+    }
+
+    @media (max-width: 768px) {
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+    }
+  }
+
+  .theme-icon-nav {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+  }
+
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    // Auth buttons (Login & Sign Up) - Same as homes navbar
+    &.nav-link-auth {
+      background: rgba(255, 255, 255, 0.2);
+      border: 2px solid white;
+      color: white;
+      font-weight: 600;
+      transition: all 0.3s ease;
+
+      &:hover {
+        background: white;
+        color: var(--accent-primary);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+      }
+
+      &.btn-signup-nav {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid white;
+        color: white;
+
+        &:hover {
+          background: white;
+          color: var(--accent-primary);
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding: 8px 14px;
+      font-size: 14px;
+    }
+  }
+}
+
 .landing-page {
   min-height: 100vh;
   background: var(--bg-primary);
-  transition: background 0.3s ease;
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   
   // Remove navbar for landing page
   .main-nav {
@@ -67,6 +240,7 @@
   min-height: 100vh;
   display: flex;
   align-items: center;
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 
   [data-theme="dark"] & {
     background: linear-gradient(135deg, #2d3e50 0%, #3a4f63 100%);
@@ -98,9 +272,41 @@
 .hero-content {
   color: white;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
+}
+
+.welcome-text {
+  font-size: 28px;
+  font-weight: 400;
+  color: white;
+  margin: 0 0 10px;
+  opacity: 0.95;
+  text-align: center;
+  letter-spacing: 1px;
+  animation: fadeInDown 0.8s ease-out;
+  transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+
+  [data-theme="dark"] & {
+    color: #e0e0e0;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 22px;
+  }
+}
+
+@keyframes fadeInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
 }
 
 .hero-badge {
@@ -133,12 +339,7 @@
     .brand-letter {
       display: inline-block;
       color: white;
-      text-shadow: 
-        0 0 20px rgba(255, 255, 255, 0.6),
-        0 0 40px rgba(255, 255, 255, 0.4),
-        0 0 60px rgba(255, 255, 255, 0.3),
-        0 5px 15px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
+      transition: color 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s ease;
       margin: 0 2px;
       opacity: 0;
       transform: translateX(-30px);
@@ -146,11 +347,6 @@
 
       [data-theme="dark"] & {
         color: #e0e0e0;
-        text-shadow: 
-          0 0 20px rgba(224, 224, 224, 0.6),
-          0 0 40px rgba(224, 224, 224, 0.4),
-          0 0 60px rgba(224, 224, 224, 0.3),
-          0 5px 15px rgba(0, 0, 0, 0.5);
       }
 
       // Staggered animation delay for each letter (left to right)
@@ -162,11 +358,6 @@
 
       &:hover {
         transform: translateY(-10px) scale(1.15);
-        text-shadow: 
-          0 0 30px rgba(255, 255, 255, 0.8),
-          0 0 60px rgba(255, 255, 255, 0.6),
-          0 0 90px rgba(255, 255, 255, 0.4),
-          0 10px 25px rgba(0, 0, 0, 0.4);
       }
     }
   }
@@ -283,7 +474,7 @@
   border-radius: 16px;
   padding: 30px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   backdrop-filter: blur(10px);
 
@@ -360,6 +551,7 @@
 .features-section {
   padding: 100px 20px;
   background: var(--bg-primary);
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .features-container {
@@ -399,7 +591,7 @@
   background: var(--bg-secondary);
   border-radius: 16px;
   padding: 40px 30px;
-  transition: all 0.3s ease;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid var(--border-color);
   box-shadow: var(--shadow-sm);
 
@@ -445,6 +637,7 @@
   background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
   position: relative;
   overflow: hidden;
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   
   [data-theme="dark"] & {
     background: linear-gradient(135deg, #2d3e50 0%, #3a4f63 100%);
@@ -522,6 +715,7 @@
   background: var(--bg-secondary);
   padding: 60px 20px 30px;
   border-top: 1px solid var(--border-color);
+  transition: background 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s ease;
   
   [data-theme="dark"] & {
     background: var(--bg-tertiary);

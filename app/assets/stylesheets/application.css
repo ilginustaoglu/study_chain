@@ -87,13 +87,26 @@
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-optical-sizing: auto;
   background: var(--bg-primary);
   color: var(--text-primary);
   min-height: 100vh;
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Font utility classes */
+.font-space-grotesk {
+  font-family: "Space Grotesk", sans-serif;
+  font-optical-sizing: auto;
+}
+
+.font-gaegu {
+  font-family: "Gaegu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
 /* ============================================
@@ -143,7 +156,7 @@ body {
   font-weight: 700;
   text-align: center;
   color: var(--text-primary);
-  font-family: 'Courier New', monospace;
+  font-family: "Space Grotesk", monospace;
   margin: 12px 0;
   padding: 12px;
   background: var(--bg-tertiary);

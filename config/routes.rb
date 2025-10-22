@@ -15,6 +15,7 @@ Rails.application.routes.draw do
     get 'users', to: 'admin#users'
     patch 'users/:id/role', to: 'admin#update_user_role', as: 'update_user_role'
     delete 'users/:id', to: 'admin#delete_user', as: 'delete_user'
+    post 'users/:id/force_logout', to: 'admin#force_logout_user', as: 'force_logout_user'
   end
   
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
