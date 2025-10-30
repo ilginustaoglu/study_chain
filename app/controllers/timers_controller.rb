@@ -90,6 +90,6 @@ class TimersController < ApplicationController
   private
 
   def timer_params
-    params.require(:timer).permit(:name, :seconds, :alarm_seconds, :is_running, :alarm_time)
+    params.require(:timer).permit(:name, :seconds, :is_running)
   end
 end

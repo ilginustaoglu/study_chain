@@ -1,115 +1,362 @@
-<!-- Theme Switcher -->
-<div class="theme-switcher">
-  <span class="theme-switcher-label">Theme:</span>
-  <button class="theme-toggle-button" onclick="toggleTheme()">
-    <span class="theme-icon" id="themeIcon">🌙</span>
-    <span id="themeText">Dark</span>
-  </button>
-</div>
-
-<div class="container" style="max-width: 1000px; margin: 40px auto; padding: 20px;">
-  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-    <div>
-      <h1 style="color: var(--text-primary); font-size: 2.5em; margin-bottom: 5px;"><%= @collection.title %></h1>
-      <% if @collection.description.present? %>
-        <p style="color: var(--text-secondary); font-size: 1.1em;"><%= @collection.description %></p>
+<div class="container" style="max-width: 1200px; margin: 40px auto; padding: 20px;">
+  <!-- Header -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+    <div style="flex: 1; display: flex; align-items: center; gap: 12px;">
+      <h1 style="color: var(--text-primary); font-size: 1.5em; margin: 0;">
+        <i class="fa-solid fa-repeat"></i> <%= @collection.title %>
+      </h1>
+      <% if @flashcards.count > 0 %>
+        <span id="currentCardBadge" style="color: white; font-size: 0.9em; background: var(--accent-primary); padding: 6px 14px; border-radius: 20px; font-weight: bold; display: none;">
+          <span id="currentCardNumHeader">1</span>/<%= @flashcards.count %>
+        </span>
+      <% end %>
+      <span style="color: var(--text-secondary); font-size: 0.9em; background: var(--bg-tertiary); padding: 6px 14px; border-radius: 20px; border: 2px solid var(--border-color);">
+        📚 <%= @flashcards.count %> <%= @flashcards.count == 1 ? 'Card' : 'Cards' %>
+      </span>
+    </div>
+    
+    <div style="display: flex; gap: 15px; align-items: center;">
+      <button id="modeToggleBtn" onclick="toggleMode()" style="background: var(--accent-primary); color: white; padding: 12px 24px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1em; display: flex; align-items: center; gap: 8px; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <i class="fa-solid fa-pen-to-square"></i>
+        <span id="modeToggleBtnText">Edit Mode</span>
+      </button>
+      <%= link_to flashcard_collections_path, style: "text-decoration: none; background: var(--bg-tertiary); color: var(--text-primary); padding: 12px 24px; border-radius: 8px; font-weight: bold; display: flex; align-items: center; gap: 8px; border: 2px solid var(--border-color);" do %>
+        <i class="fa-solid fa-arrow-left"></i> Back
       <% end %>
     </div>
-    <%= link_to "← Back", flashcard_collections_path, class: "btn-back", style: "text-decoration: none; background: var(--accent-primary); color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold;" %>
   </div>
 
-  <!-- Add New Card Form -->
-  <div style="background: var(--accent-primary); padding: 25px; border-radius: 10px; margin-bottom: 30px; color: white;">
-    <h3 style="margin-bottom: 15px;">➕ Add New Card</h3>
-    <%= form_with url: add_card_flashcard_collection_path(@collection), method: :post, local: true do %>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
-        <div>
-          <%= label_tag 'flashcard[front]', "Front Side *", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
-          <%= text_area_tag 'flashcard[front]', nil, required: true, rows: 3, placeholder: "Question or word...", style: "width: 100%; padding: 10px; border: none; border-radius: 5px; font-size: 1em; color: #2c3e50;" %>
-        </div>
-        <div>
-          <%= label_tag 'flashcard[back]', "Back Side *", style: "display: block; font-weight: bold; margin-bottom: 5px;" %>
-          <%= text_area_tag 'flashcard[back]', nil, required: true, rows: 3, placeholder: "Answer or translation...", style: "width: 100%; padding: 10px; border: none; border-radius: 5px; font-size: 1em; color: #2c3e50;" %>
-        </div>
-      </div>
-      <%= submit_tag "Add Card", style: "background: white; color: var(--accent-primary); padding: 12px 25px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1em;" %>
-    <% end %>
-  </div>
-
-  <!-- Cards List -->
-  <div style="background: var(--bg-secondary); padding: 25px; border-radius: 10px; box-shadow: var(--shadow-md);">
-    <h3 style="color: var(--text-primary); margin-bottom: 20px;">Cards (<%= @flashcards.count %>)</h3>
-    
-    <% if @flashcards.empty? %>
-      <p style="text-align: center; color: var(--text-secondary); padding: 30px;">No cards added yet. You can add cards using the form above.</p>
-    <% else %>
-      <div style="display: grid; gap: 15px;">
-        <% @flashcards.each_with_index do |card, index| %>
-          <div class="flashcard-item" style="border: 2px solid var(--border-color); border-radius: 10px; padding: 20px; position: relative; transition: all 0.3s; background: var(--bg-tertiary);" onmouseover="this.style.borderColor='var(--accent-primary)'" onmouseout="this.style.borderColor='var(--border-color)'">
-            <div style="position: absolute; top: 10px; right: 10px;">
-              <%= link_to "🗑️", remove_card_flashcard_collection_path(@collection, card_id: card.id), method: :delete, data: { confirm: "Are you sure you want to delete this card?" }, style: "text-decoration: none; font-size: 1.2em;" %>
-            </div>
-            
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-              <div>
-                <div style="background: rgba(74, 144, 226, 0.1); padding: 15px; border-radius: 8px; min-height: 80px; border: 1px solid var(--accent-primary);">
-                  <strong style="color: var(--accent-primary); display: block; margin-bottom: 8px;">🔵 Front Side:</strong>
-                  <p style="color: var(--text-primary); margin: 0; white-space: pre-wrap;"><%= card.front %></p>
-                </div>
-              </div>
-              <div>
-                <div style="background: rgba(74, 144, 226, 0.05); padding: 15px; border-radius: 8px; min-height: 80px; border: 1px solid var(--border-color);">
-                  <strong style="color: var(--text-secondary); display: block; margin-bottom: 8px;">🔴 Back Side:</strong>
-                  <p style="color: var(--text-primary); margin: 0; white-space: pre-wrap;"><%= card.back %></p>
-                </div>
-              </div>
+  <% if @flashcards.empty? %>
+    <!-- Empty State -->
+    <div style="background: var(--bg-secondary); padding: 60px 40px; border-radius: 15px; text-align: center; box-shadow: var(--shadow-md);">
+      <div style="font-size: 4em; margin-bottom: 20px;">📇</div>
+      <h2 style="color: var(--text-primary); margin-bottom: 15px;">No Cards Yet</h2>
+      <p style="color: var(--text-secondary); font-size: 1.1em; margin-bottom: 25px;">
+        Click "Edit Mode" to add your first flashcard!
+      </p>
+      <button onclick="toggleMode()" style="background: var(--accent-primary); color: white; padding: 15px 30px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.1em;">
+        <i class="fa-solid fa-plus"></i> Add Cards
+      </button>
+    </div>
+  <% else %>
+    <!-- Study Mode -->
+    <div id="studyMode" style="display: block;">
+      <!-- Flashcard Display -->
+      <div style="perspective: 1000px; margin-bottom: 30px;">
+        <div id="flashcardContainer" class="flashcard-flip-container" onclick="flipCard()" style="position: relative; width: 100%; max-width: 550px; height: 320px; margin: 0 auto; cursor: pointer; transition: transform 0.6s; transform-style: preserve-3d;">
+          
+          <!-- Front Side -->
+          <div class="flashcard-face flashcard-front" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, var(--accent-primary) 0%, #5a8fd6 100%); border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.3);">
+            <div style="color: rgba(255,255,255,0.8); font-size: 0.85em; margin-bottom: 15px; font-weight: bold;">QUESTION</div>
+            <div id="cardFront" style="color: white; font-size: 1.5em; font-weight: 500; text-align: center; line-height: 1.5; word-wrap: break-word; max-width: 100%;"></div>
+            <div style="position: absolute; bottom: 15px; color: rgba(255,255,255,0.7); font-size: 0.85em;">
+              <i class="fa-solid fa-rotate"></i> Click to reveal answer
             </div>
           </div>
+
+          <!-- Back Side -->
+          <div class="flashcard-face flashcard-back" style="position: absolute; width: 100%; height: 100%; backface-visibility: hidden; transform: rotateY(180deg); display: flex; flex-direction: column; justify-content: center; align-items: center; background: linear-gradient(135deg, #4a7c59 0%, #5a9c6a 100%); border-radius: 15px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.3);">
+            <div style="color: rgba(255,255,255,0.8); font-size: 0.85em; margin-bottom: 15px; font-weight: bold;">ANSWER</div>
+            <div id="cardBack" style="color: white; font-size: 1.5em; font-weight: 500; text-align: center; line-height: 1.5; word-wrap: break-word; max-width: 100%;"></div>
+            <div style="position: absolute; bottom: 15px; color: rgba(255,255,255,0.7); font-size: 0.85em;">
+              <i class="fa-solid fa-rotate"></i> Click to see question
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Controls -->
+      <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 20px;">
+        <button id="prevBtn" onclick="previousCard()" style="background: var(--bg-secondary); color: var(--text-primary); padding: 15px 30px; border: 2px solid var(--border-color); border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1em; display: flex; align-items: center; gap: 10px; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-primary)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          <i class="fa-solid fa-arrow-left"></i> Previous
+        </button>
+        
+        <button onclick="shuffleCards()" style="background: var(--accent-primary); color: white; padding: 15px 30px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1em; display: flex; align-items: center; gap: 10px;">
+          <i class="fa-solid fa-shuffle"></i> Shuffle
+        </button>
+        
+        <button id="nextBtn" onclick="nextCard()" style="background: var(--bg-secondary); color: var(--text-primary); padding: 15px 30px; border: 2px solid var(--border-color); border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1em; display: flex; align-items: center; gap: 10px; transition: all 0.2s;" onmouseover="this.style.borderColor='var(--accent-primary)'" onmouseout="this.style.borderColor='var(--border-color)'">
+          Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <!-- Progress Indicators -->
+      <div id="progressDots" style="display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; padding: 0 20px;"></div>
+    </div>
+
+    <!-- Edit Mode -->
+    <div id="editMode" style="display: none;">
+      <!-- Add New Card Form -->
+      <div style="background: var(--accent-primary); padding: 30px; border-radius: 15px; margin-bottom: 30px; color: white; box-shadow: var(--shadow-md);">
+        <h3 style="margin-bottom: 20px; font-size: 1.5em;">
+          <i class="fa-solid fa-plus"></i> Add New Card
+        </h3>
+        <%= form_with url: add_card_flashcard_collection_path(@collection), method: :post, local: true do %>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+            <div>
+              <%= label_tag 'flashcard[front]', "Front Side (Question) *", style: "display: block; font-weight: bold; margin-bottom: 8px; font-size: 1.1em;" %>
+              <%= text_area_tag 'flashcard[front]', nil, required: true, rows: 5, placeholder: "Enter question or word...", style: "width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 1em; color: #2c3e50; resize: vertical;" %>
+            </div>
+            <div>
+              <%= label_tag 'flashcard[back]', "Back Side (Answer) *", style: "display: block; font-weight: bold; margin-bottom: 8px; font-size: 1.1em;" %>
+              <%= text_area_tag 'flashcard[back]', nil, required: true, rows: 5, placeholder: "Enter answer or translation...", style: "width: 100%; padding: 15px; border: none; border-radius: 10px; font-size: 1em; color: #2c3e50; resize: vertical;" %>
+            </div>
+          </div>
+          <%= submit_tag "Add Card", style: "background: white; color: var(--accent-primary); padding: 15px 40px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; font-size: 1.1em;" %>
         <% end %>
       </div>
-    <% end %>
-  </div>
+
+      <!-- Cards List -->
+      <div style="background: var(--bg-secondary); padding: 30px; border-radius: 15px; box-shadow: var(--shadow-md);">
+        <h3 style="color: var(--text-primary); margin-bottom: 25px; font-size: 1.5em;">
+          📚 All Cards (<%= @flashcards.count %>)
+        </h3>
+        
+        <div style="display: grid; gap: 15px;">
+          <% @flashcards.each_with_index do |card, index| %>
+            <div class="card-item" style="border: 2px solid var(--border-color); border-radius: 10px; padding: 20px; transition: all 0.3s; background: var(--bg-tertiary);" onmouseover="this.style.borderColor='var(--accent-primary)'; this.style.boxShadow='var(--shadow-md)'" onmouseout="this.style.borderColor='var(--border-color)'; this.style.boxShadow='none'">
+              <!-- Header with card number and delete button -->
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 2px solid var(--border-color);">
+                <span style="background: var(--accent-primary); color: white; padding: 6px 14px; border-radius: 20px; font-weight: bold; font-size: 0.95em;">
+                  Card #<%= index + 1 %>
+                </span>
+                <%= link_to remove_card_flashcard_collection_path(@collection, card_id: card.id), method: :delete, data: { confirm: "Are you sure you want to delete this card?" }, style: "text-decoration: none; background: #C85A54; color: white; padding: 8px 14px; border-radius: 8px; font-size: 0.95em; font-weight: bold; display: flex; align-items: center; gap: 6px;" do %>
+                  <i class="fa-solid fa-trash"></i> Delete
+                <% end %>
+              </div>
+              
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                <div>
+                  <div style="background: rgba(74, 144, 226, 0.1); padding: 15px; border-radius: 8px; min-height: 80px; border: 2px solid var(--accent-primary);">
+                    <strong style="color: var(--accent-primary); display: block; margin-bottom: 8px; font-size: 1em;">
+                      <i class="fa-solid fa-circle-question"></i> Question:
+                    </strong>
+                    <p style="color: var(--text-primary); margin: 0; white-space: pre-wrap; line-height: 1.5; font-size: 0.95em;"><%= card.front %></p>
+                  </div>
+                </div>
+                <div>
+                  <div style="background: rgba(74, 124, 89, 0.1); padding: 15px; border-radius: 8px; min-height: 80px; border: 2px solid #4a7c59;">
+                    <strong style="color: #4a7c59; display: block; margin-bottom: 8px; font-size: 1em;">
+                      <i class="fa-solid fa-circle-check"></i> Answer:
+                    </strong>
+                    <p style="color: var(--text-primary); margin: 0; white-space: pre-wrap; line-height: 1.5; font-size: 0.95em;"><%= card.back %></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
 </div>
 
 <script>
-  // Theme switcher functionality
-  function getTheme() {
-    return localStorage.getItem('theme') || 'light';
+  // Flashcard data
+  const flashcards = <%= raw @flashcards.map { |card| { front: card.front, back: card.back } }.to_json %>;
+  let currentIndex = 0;
+  let isFlipped = false;
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', function() {
+    if (flashcards.length > 0) {
+      loadCard(0);
+      createProgressDots();
+      updateNavigationButtons();
+      showCardBadge();
+    }
+  });
+
+  function showCardBadge() {
+    const badge = document.getElementById('currentCardBadge');
+    if (badge) badge.style.display = 'inline-block';
   }
 
-  function setTheme(theme) {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    updateThemeButton(theme);
+  function hideCardBadge() {
+    const badge = document.getElementById('currentCardBadge');
+    if (badge) badge.style.display = 'none';
   }
 
-  function updateThemeButton(theme) {
-    const themeIcon = document.getElementById('themeIcon');
-    const themeText = document.getElementById('themeText');
+  function toggleMode() {
+    const studyMode = document.getElementById('studyMode');
+    const editMode = document.getElementById('editMode');
+    const modeToggleBtn = document.getElementById('modeToggleBtnText');
     
-    if (theme === 'dark') {
-      themeIcon.innerHTML = '<i class="fa-solid fa-sun"></i>';
-      themeText.textContent = 'Light';
+    if (studyMode.style.display === 'none') {
+      // Switch to Study Mode
+      studyMode.style.display = 'block';
+      editMode.style.display = 'none';
+      modeToggleBtn.innerHTML = 'Edit Mode';
+      document.getElementById('modeToggleBtn').innerHTML = '<i class="fa-solid fa-pen-to-square"></i><span id="modeToggleBtnText">Edit Mode</span>';
+      showCardBadge();
     } else {
-      themeIcon.innerHTML = '<i class="fa-solid fa-moon"></i>';
-      themeText.textContent = 'Dark';
+      // Switch to Edit Mode
+      studyMode.style.display = 'none';
+      editMode.style.display = 'block';
+      modeToggleBtn.innerHTML = 'Study Mode';
+      document.getElementById('modeToggleBtn').innerHTML = '<i class="fa-solid fa-graduation-cap"></i><span id="modeToggleBtnText">Study Mode</span>';
+      hideCardBadge();
     }
   }
 
-  function toggleTheme() {
-    const currentTheme = getTheme();
-    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-    setTheme(newTheme);
+  function loadCard(index) {
+    if (flashcards.length === 0) return;
+    
+    currentIndex = index;
+    const card = flashcards[currentIndex];
+    
+    document.getElementById('cardFront').textContent = card.front;
+    document.getElementById('cardBack').textContent = card.back;
+    
+    // Update header badge
+    const headerNum = document.getElementById('currentCardNumHeader');
+    if (headerNum) headerNum.textContent = currentIndex + 1;
+    
+    // Reset flip state
+    if (isFlipped) {
+      flipCard();
+    }
+    
+    updateProgressDots();
+    updateNavigationButtons();
   }
 
-  (function initTheme() {
-    const savedTheme = getTheme();
-    setTheme(savedTheme);
-  })();
+  function flipCard() {
+    const container = document.getElementById('flashcardContainer');
+    isFlipped = !isFlipped;
+    
+    if (isFlipped) {
+      container.style.transform = 'rotateY(180deg)';
+    } else {
+      container.style.transform = 'rotateY(0deg)';
+    }
+  }
+
+  function nextCard() {
+    if (currentIndex < flashcards.length - 1) {
+      loadCard(currentIndex + 1);
+    }
+  }
+
+  function previousCard() {
+    if (currentIndex > 0) {
+      loadCard(currentIndex - 1);
+    }
+  }
+
+  function shuffleCards() {
+    // Fisher-Yates shuffle
+    for (let i = flashcards.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [flashcards[i], flashcards[j]] = [flashcards[j], flashcards[i]];
+    }
+    loadCard(0);
+    createProgressDots();
+  }
+
+  function createProgressDots() {
+    const container = document.getElementById('progressDots');
+    container.innerHTML = '';
+    
+    flashcards.forEach((card, index) => {
+      const dot = document.createElement('button');
+      dot.style.cssText = `
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        border: 2px solid var(--border-color);
+        background: var(--bg-tertiary);
+        cursor: pointer;
+        transition: all 0.3s;
+        padding: 0;
+      `;
+      
+      if (index === currentIndex) {
+        dot.style.background = 'var(--accent-primary)';
+        dot.style.borderColor = 'var(--accent-primary)';
+        dot.style.width = '16px';
+        dot.style.height = '16px';
+      }
+      
+      dot.onclick = () => loadCard(index);
+      dot.onmouseover = () => {
+        if (index !== currentIndex) {
+          dot.style.borderColor = 'var(--accent-primary)';
+        }
+      };
+      dot.onmouseout = () => {
+        if (index !== currentIndex) {
+          dot.style.borderColor = 'var(--border-color)';
+        }
+      };
+      
+      container.appendChild(dot);
+    });
+  }
+
+  function updateProgressDots() {
+    const dots = document.getElementById('progressDots').children;
+    Array.from(dots).forEach((dot, index) => {
+      if (index === currentIndex) {
+        dot.style.background = 'var(--accent-primary)';
+        dot.style.borderColor = 'var(--accent-primary)';
+        dot.style.width = '16px';
+        dot.style.height = '16px';
+      } else {
+        dot.style.background = 'var(--bg-tertiary)';
+        dot.style.borderColor = 'var(--border-color)';
+        dot.style.width = '12px';
+        dot.style.height = '12px';
+      }
+    });
+  }
+
+  function updateNavigationButtons() {
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
+    if (prevBtn) {
+      prevBtn.disabled = currentIndex === 0;
+      prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+      prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+    }
+    
+    if (nextBtn) {
+      nextBtn.disabled = currentIndex === flashcards.length - 1;
+      nextBtn.style.opacity = currentIndex === flashcards.length - 1 ? '0.5' : '1';
+      nextBtn.style.cursor = currentIndex === flashcards.length - 1 ? 'not-allowed' : 'pointer';
+    }
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(event) {
+    if (document.getElementById('studyMode').style.display === 'none') return;
+    
+    switch(event.key) {
+      case 'ArrowLeft':
+        previousCard();
+        break;
+      case 'ArrowRight':
+        nextCard();
+        break;
+      case ' ':
+      case 'Enter':
+        event.preventDefault();
+        flipCard();
+        break;
+    }
+  });
 </script>
 
 <style>
-  .flashcard-item:hover {
-    box-shadow: var(--shadow-md);
+  .card-item:hover {
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .flashcard-flip-container {
+      height: 250px !important;
+      max-width: 100% !important;
+    }
   }
 </style>

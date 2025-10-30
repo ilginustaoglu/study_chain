@@ -5,7 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :timeoutable
 
   # Role enum: normal users have limited access, premium users have full access, admin has all permissions
-  enum role: { normal: 0, premium: 1, admin: 2 }
+  enum :role, { normal: 0, premium: 1, admin: 2 }
 
   # Validations
   validates :name, presence: true

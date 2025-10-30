@@ -10,7 +10,6 @@
     <div id="addTimerForm" class="add-form" style="display: none;">
       <%= form_with model: Timer.new, local: true, class: "todo-form" do |f| %>
         <%= f.text_field :name, placeholder: "Timer Name (e.g., Study, Break)", class: "form-input", required: true %>
-        <%= f.time_field :alarm_time, class: "form-input", placeholder: "Set Alarm (optional)" %>
         <div class="form-actions">
           <%= f.submit "Create Timer", class: "btn-save" %>
           <button type="button" class="btn-cancel" onclick="hideAddTimerForm()">Cancel</button>
@@ -39,11 +38,6 @@
               </button>
               <button class="timer-btn" onclick="resetTimerAction(<%= timer.id %>)"><i class="fa-solid fa-reply"></i></button>
             </div>
-            <% if timer.alarm_seconds %>
-              <div class="timer-alarm-info">
-              <i class="fa-solid fa-bell"></i> Alarm: <%= timer.alarm_time %>
-              </div>
-            <% end %>
           </div>
         <% end %>
       <% end %>
@@ -171,7 +165,6 @@
       .then(response => response.json())
       .then(data => {
         updateTimerDisplay(timerId, data.seconds);
-        checkAlarm(timerId, data.seconds, data.alarm_seconds);
       })
       .catch(error => console.error('Error:', error));
     }, 1000);
@@ -196,33 +189,6 @@
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
     return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-  }
-
-  function checkAlarm(timerId, currentSeconds, alarmSeconds) {
-    if (alarmSeconds && currentSeconds === alarmSeconds) {
-      stopClientTimer(timerId);
-      updateToggleButton(timerId, false);
-      
-      // Update server state
-      fetch(`/timers/${timerId}/pause`, {
-        method: 'PATCH',
-        headers: {
-          'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        }
-      });
-      
-      // Browser notification
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('⏰ Timer Alarm!', {
-          body: 'Your timer has reached the alarm time!',
-          icon: '⏰'
-        });
-      }
-      
-      alert('⏰ Timer Alarm!\nTime\'s up!');
-    }
   }
 
   // Delete timer
@@ -282,7 +248,6 @@
       })
       .then(data => {
         const name = escapeHtml(data.name);
-        const alarmTime = data.alarm_seconds ? formatAlarmTime(data.alarm_seconds) : '';
         
         modalBody.innerHTML = `
           <h2>✏️ Edit Timer</h2>
@@ -290,10 +255,6 @@
             <div class="modal-form-group">
               <label for="edit-timer-name">Timer Name</label>
               <input type="text" id="edit-timer-name" name="name" value="${name}" class="modal-form-control" required>
-            </div>
-            <div class="modal-form-group">
-              <label for="edit-timer-alarm">Alarm Time (HH:MM)</label>
-              <input type="time" id="edit-timer-alarm" name="alarm_time" value="${alarmTime}" class="modal-form-control">
             </div>
             <div class="modal-form-buttons">
               <button type="submit" class="btn btn-primary">💾 Save</button>
@@ -313,17 +274,9 @@
       });
   }
 
-  function formatAlarmTime(seconds) {
-    if (!seconds) return '';
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
-  }
-
   // Update timer
   function updateTimer(timerId) {
     const name = document.getElementById('edit-timer-name').value;
-    const alarmTime = document.getElementById('edit-timer-alarm').value;
 
     fetch(`/timers/${timerId}`, {
       method: 'PATCH',
@@ -334,8 +287,7 @@
       },
       body: JSON.stringify({
         timer: {
-          name: name,
-          alarm_time: alarmTime
+          name: name
         }
       })
     })
@@ -376,11 +328,6 @@
       hideAddTimerForm();
     }
   });
-
-  // Request notification permission on load
-  if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
-  }
 
   // Auto-start timers that are running when page loads
   document.addEventListener('DOMContentLoaded', function() {
