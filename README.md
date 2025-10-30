@@ -49,20 +49,20 @@ For detailed information, see [USER_AUTHENTICATION.md](USER_AUTHENTICATION.md)
 
 ## Tech Stack
 
-- **Framework**: Ruby on Rails 6.1.7
-- **Ruby Version**: 2.7.7
+- **Framework**: Ruby on Rails 8.0
+- **Ruby Version**: 3.2.2
 - **Database**: PostgreSQL
 - **Authentication**: Devise
-- **Asset Pipeline**: Webpacker
-- **Styling**: SCSS with modern gradients and animations
-- **JavaScript**: Vanilla JS with Turbolinks
+- **Frontend**: Hotwire (Turbo + Stimulus) with Importmap
+- **Styling**: SCSS with Dart Sass and modern gradients and animations
+- **JavaScript**: Vanilla JS with Turbo
 
 ## Setup Instructions
 
 ### Prerequisites
-- Ruby 2.7.7
+- Ruby 3.2.2
 - PostgreSQL
-- Node.js and Yarn
+- Node.js (for Dart Sass compilation)
 
 ### Installation
 
@@ -75,7 +75,7 @@ For detailed information, see [USER_AUTHENTICATION.md](USER_AUTHENTICATION.md)
 2. Install dependencies
    ```bash
    bundle install
-   yarn install
+   npm install
    ```
 
 3. Setup database
@@ -85,9 +85,16 @@ For detailed information, see [USER_AUTHENTICATION.md](USER_AUTHENTICATION.md)
    rails db:seed
    ```
 
-4. Start the server
+4. Start the development server
+   ```bash
+   bin/dev
+   ```
+   
+   Or manually start Rails and CSS compilation:
    ```bash
    rails server
+   # In another terminal:
+   bin/rails dartsass:watch
    ```
 
 5. Visit `http://localhost:3000`

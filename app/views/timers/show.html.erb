@@ -4,9 +4,6 @@
   <div class="timer-details">
     <p><strong>Current Time:</strong> <%= @timer.formatted_time %></p>
     <p><strong>Status:</strong> <%= @timer.is_running ? 'Running' : 'Paused' %></p>
-    <% if @timer.alarm_seconds %>
-      <p><strong>Alarm Set:</strong> <%= @timer.alarm_time %></p>
-    <% end %>
     <p><strong>Created:</strong> <%= @timer.created_at.strftime("%B %d, %Y at %I:%M %p") %></p>
   </div>
 

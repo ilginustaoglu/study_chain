@@ -53,7 +53,7 @@
               <div style="flex-shrink: 0;">
                 <%= link_to toggle_alarm_reminder_path(reminder), method: :patch, style: "text-decoration: none; display: block;" do %>
                   <div style="width: 60px; height: 60px; border-radius: 50%; background: <%= is_active ? 'var(--accent-primary)' : '#C85A54' %>; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.8em; cursor: pointer; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-                    <%= is_active ? '<i class="fa-solid fa-bell"></i>' : '<i class="fa-solid fa-bell-slash"></i>' %>
+                    <%= is_active ? '🔔' : '🔕' %>
                   </div>
                 <% end %>
                 <small style="display: block; text-align: center; margin-top: 5px; color: <%= is_active ? 'var(--accent-primary)' : '#C85A54' %>; font-weight: bold;">

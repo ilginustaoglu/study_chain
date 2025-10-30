@@ -18,12 +18,6 @@
       <%= f.text_field :name, class: "form-control", required: true %>
     </div>
 
-    <div class="form-group">
-      <%= f.label :alarm_time, "Set Alarm (optional)" %>
-      <%= f.time_field :alarm_time, value: @timer.alarm_time, class: "form-control" %>
-      <small class="form-text">Set a time when the timer should alert you</small>
-    </div>
-
     <div class="form-actions">
       <%= f.submit "Update Timer", class: "btn btn-primary" %>
       <%= link_to "Cancel", timers_path, class: "btn btn-secondary" %>

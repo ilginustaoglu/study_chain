@@ -10,10 +10,6 @@
         <button class="timer-btn" id="toggle-btn-1" onclick="toggleTimer(1)"><i class="fa-solid fa-play"></i></button>
         <button class="timer-btn" onclick="resetTimer(1)"><i class="fa-solid fa-reply"></i></button>
       </div>
-      <div class="timer-alarm">
-        <input type="time" id="timer1-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(1)"><i class="fa-solid fa-bell"></i></button>
-      </div>
     </div>
     
     <div class="timer-box">
@@ -22,10 +18,6 @@
       <div class="timer-controls">
         <button class="timer-btn" id="toggle-btn-2" onclick="toggleTimer(2)"><i class="fa-solid fa-play"></i></button>
         <button class="timer-btn" onclick="resetTimer(2)"><i class="fa-solid fa-reply"></i></button>
-      </div>
-      <div class="timer-alarm">
-        <input type="time" id="timer2-alarm" class="alarm-input" placeholder="Set Alarm">
-        <button class="alarm-btn" onclick="setAlarm(2)"><i class="fa-solid fa-bell"></i></button>
       </div>
     </div>
   </div>
@@ -330,8 +322,8 @@
 
   // Timer functionality
   const timers = {
-    1: { seconds: 0, interval: null, alarm: null, running: false },
-    2: { seconds: 0, interval: null, alarm: null, running: false }
+    1: { seconds: 0, interval: null, running: false },
+    2: { seconds: 0, interval: null, running: false }
   };
 
   function formatTime(seconds) {
@@ -368,7 +360,6 @@
     timers[timerNum].interval = setInterval(() => {
       timers[timerNum].seconds++;
       updateDisplay(timerNum);
-      checkAlarm(timerNum);
     }, 1000);
   }
 
@@ -385,47 +376,6 @@
     pauseTimer(timerNum);
     timers[timerNum].seconds = 0;
     updateDisplay(timerNum);
-  }
-
-  function setAlarm(timerNum) {
-    const alarmInput = document.getElementById(`timer${timerNum}-alarm`);
-    const alarmTime = alarmInput.value;
-    
-    if (!alarmTime) {
-      alert('Please set an alarm time');
-      return;
-    }
-
-    const [hours, minutes] = alarmTime.split(':').map(Number);
-    const alarmSeconds = (hours * 3600) + (minutes * 60);
-    timers[timerNum].alarm = alarmSeconds;
-    
-    alert(`Alarm set for Timer ${timerNum} at ${alarmTime}`);
-  }
-
-  function checkAlarm(timerNum) {
-    if (timers[timerNum].alarm && timers[timerNum].seconds === timers[timerNum].alarm) {
-      pauseTimer(timerNum);
-      
-      // Play alarm sound (browser notification)
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(`Timer ${timerNum} Alarm!`, {
-          body: 'Your alarm time has been reached!',
-          icon: '⏰'
-        });
-      }
-      
-      // Alert
-      alert(`⏰ Timer ${timerNum} Alarm!\nTime's up!`);
-      
-      // Reset alarm
-      timers[timerNum].alarm = null;
-    }
-  }
-
-  // Request notification permission on load
-  if ('Notification' in window && Notification.permission === 'default') {
-    Notification.requestPermission();
   }
 
   // Theme functionality is now in navbar (application.html.erb)
