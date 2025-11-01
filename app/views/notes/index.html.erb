@@ -2,7 +2,7 @@
   <!-- Timers Panel (Top Left) -->
   <div class="timers-panel">
     <div class="timer-box">
-      <div class="timer-header">⏱️ Study </div>
+      <div class="timer-header"><i class="fa-solid fa-clock"></i> Study </div>
       <div class="timer-display" id="timer1-display">00:00:00</div>
       <div class="timer-controls">
         <button class="timer-btn" onclick="startTimer(1)"><i class="fa-solid fa-play"></i></button>
@@ -12,7 +12,7 @@
     </div>
     
     <div class="timer-box">
-      <div class="timer-header">⏱️ Break </div>
+      <div class="timer-header"><i class="fa-solid fa-clock"></i> Break </div>
       <div class="timer-display" id="timer2-display">00:00:00</div>
       <div class="timer-controls">
         <button class="timer-btn" onclick="startTimer(2)"><i class="fa-solid fa-play"></i></button>
@@ -53,8 +53,8 @@
               <span class="click-hint">Click for details</span>
             </div>
             <div class="todo-actions">
-              <a href="#" onclick="showEditModal(<%= note.id %>); return false;" class="btn-edit" title="Edit">✏️</a>
-              <a href="#" onclick="deleteNote(<%= note.id %>); return false;" class="btn-delete" title="Delete">🗑️</a>
+              <a href="#" onclick="showEditModal(<%= note.id %>); return false;" class="btn-edit" title="Edit"><i class="fa-solid fa-pencil"></i></a>
+              <a href="#" onclick="deleteNote(<%= note.id %>); return false;" class="btn-delete" title="Delete"><i class="fa-solid fa-trash"></i></a>
             </div>
           </div>
         <% end %>
@@ -183,7 +183,7 @@
         const content = escapeHtml(data.content);
         
         modalBody.innerHTML = `
-          <h2>✏️ Edit Note</h2>
+          <h2><i class="fa-solid fa-pencil"></i> Edit Note</h2>
           <form id="editForm" onsubmit="updateNote(${noteId}); return false;">
             <div class="modal-form-group">
               <label for="edit-title">Title</label>
@@ -495,7 +495,7 @@
   <% end %>
   
   <%= link_to reminders_path, class: "menu-item", style: "display: flex; align-items: center; gap: 12px; padding: 12px; text-decoration: none; color: #6F4E37; border-radius: 8px; transition: background 0.2s;" do %>
-    <span style="font-size: 1.5em;"><i class="fa-solid fa-alarm-clock"></i></span>
+    <span style="font-size: 1.5em;"><i class="fa-solid fa-clock"></i></span>
     <div>
       <strong style="display: block; font-size: 1em;">Reminders</strong>
       <small style="color: #6F4E37;">Alarms and notes</small>

@@ -69,8 +69,8 @@
                   </div>
                   
                   <div style="display: flex; gap: 8px;">
-                    <%= link_to "✏️", edit_agenda_path(agenda), style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Edit" %>
-                    <%= link_to "🗑️", agenda_path(agenda), method: :delete, data: { confirm: "Are you sure you want to delete this event?" }, style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Delete" %>
+                    <%= link_to "<i class="fa-solid fa-pencil"></i>", edit_agenda_path(agenda), style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Edit" %>
+                    <%= link_to "<i class="fa-solid fa-trash"></i>", agenda_path(agenda), method: :delete, data: { confirm: "Are you sure you want to delete this event?" }, style: "text-decoration: none; font-size: 1.2em; padding: 5px;", title: "Delete" %>
                   </div>
                 </div>
               </div>

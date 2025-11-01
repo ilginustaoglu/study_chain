@@ -105,7 +105,7 @@ confirmed_at var mı?
 **HTML Email:**
 - 🎨 Mavi gradient header
 - 🔐 Büyük, vurgulu 6 haneli kod
-- ⏱️ 30 dakika uyarısı
+- <i class="fa-solid fa-clock"></i> 30 dakika uyarısı
 - 📋 Güvenlik bilgileri
 - 📱 Responsive tasarım
 

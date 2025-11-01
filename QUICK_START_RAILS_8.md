@@ -185,7 +185,7 @@ rails db:migrate:status
 rails db:migrate
 ```
 
-## 📚 Documentation
+## <i class="fa-solid fa-book"></i> Documentation
 
 - **Rails 8 Guide:** https://guides.rubyonrails.org/
 - **Turbo Handbook:** https://turbo.hotwired.dev/

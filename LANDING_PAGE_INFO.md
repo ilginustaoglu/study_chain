@@ -54,7 +54,7 @@ Otomatik homes#index'e yönlendirilir
 ## 🎨 Landing Page Bölümleri
 
 ### Hero Section
-- 📚 **Badge**: "Welcome to"
+- <i class="fa-solid fa-book"></i> **Badge**: "Welcome to"
 - 🎯 **Title**: "StudyChain" (büyük, bold)
 - 📝 **Subtitle**: Ana açıklama
 - 📖 **Description**: Detaylı bilgi
@@ -67,9 +67,9 @@ Otomatik homes#index'e yönlendirilir
 ### Features Section
 6 ana özellik kartı:
 1. 📝 **Smart Notes** - Not yönetimi
-2. ⏱️ **Study Timers** - Çalışma takibi
+2. <i class="fa-solid fa-clock"></i> **Study Timers** - Çalışma takibi
 3. 🎴 **Flashcards** - Kart sistemi
-4. 📚 **Study Materials** - Materyal saklama
+4. <i class="fa-solid fa-book"></i> **Study Materials** - Materyal saklama
 5. 📅 **Agenda Planning** - Planlama
 6. 🔔 **Smart Reminders** - Hatırlatıcılar
 

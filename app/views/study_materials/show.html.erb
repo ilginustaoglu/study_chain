@@ -50,7 +50,7 @@
               </div>
               <div style="display: flex; gap: 10px;">
                 <%= link_to "Download", rails_blob_path(file, disposition: "attachment"), style: "background: var(--accent-primary); color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
-                <%= link_to "🗑️ Delete", remove_file_study_material_path(@study_material, file_id: file.id), method: :delete, data: { confirm: "Are you sure you want to delete this file?" }, style: "background: #e74c3c; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
+                <%= link_to "<i class="fa-solid fa-trash"></i> Delete", remove_file_study_material_path(@study_material, file_id: file.id), method: :delete, data: { confirm: "Are you sure you want to delete this file?" }, style: "background: #e74c3c; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-weight: bold;" %>
               </div>
             </div>
             
