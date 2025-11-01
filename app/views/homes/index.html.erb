@@ -10,18 +10,18 @@
             
             <!-- Timer Header -->
             <div class="timer-header">
-              ⏱️ Timer
+              <i class="fa-solid fa-clock"></i> Timer
             </div>
             
             <!-- Two Timers in One Table -->
             <div class="dual-timer-container">
               <div class="timer-row <%= timer.active_timer == 'study' ? 'active-timer' : '' %>" id="study-row-<%= timer.id %>">
-                <div class="timer-label" id="study-label-<%= timer.id %>">📚 Study</div>
+                <div class="timer-label" id="study-label-<%= timer.id %>"><i class="fa-solid fa-book"></i> Study</div>
                 <div class="timer-display" id="study-display-<%= timer.id %>"><%= timer.formatted_study_time %></div>
               </div>
               
               <div class="timer-row <%= timer.active_timer == 'break' ? 'active-timer' : '' %>" id="break-row-<%= timer.id %>">
-                <div class="timer-label" id="break-label-<%= timer.id %>">☕ Break</div>
+                <div class="timer-label" id="break-label-<%= timer.id %>"><i class="fa-solid fa-mug-hot"></i> Break</div>
                 <div class="timer-display" id="break-display-<%= timer.id %>"><%= timer.formatted_break_time %></div>
               </div>
             </div>
@@ -72,8 +72,8 @@
             <p><%= truncate(note.content, length: 80) %></p>
           </div>
           <div class="note-postit-actions">
-            <a href="#" onclick="showEditModal(<%= note.id %>); return false;" class="btn-edit" title="Edit">✏️</a>
-            <a href="#" onclick="deleteNote(<%= note.id %>); return false;" class="btn-delete" title="Delete">🗑️</a>
+            <a href="#" onclick="showEditModal(<%= note.id %>); return false;" class="btn-edit" title="Edit"><i class="fa-solid fa-pencil"></i></a>
+            <a href="#" onclick="deleteNote(<%= note.id %>); return false;" class="btn-delete" title="Delete"><i class="fa-solid fa-trash"></i></a>
           </div>
         </div>
       <% end %>
@@ -248,7 +248,7 @@
         const content = escapeHtml(data.content);
         
         modalBody.innerHTML = `
-          <h2>✏️ Edit Note</h2>
+          <h2><i class="fa-solid fa-pencil"></i> Edit Note</h2>
           <form id="editForm" onsubmit="updateNote(${noteId}); return false;">
             <div class="modal-form-group">
               <label for="edit-title">Title</label>
@@ -490,7 +490,7 @@
         const completed = data.completed ? 'checked' : '';
         
         modalBody.innerHTML = `
-          <h2>✏️ Edit Task</h2>
+          <h2><i class="fa-solid fa-pencil"></i> Edit Task</h2>
           <form id="editTaskForm" onsubmit="updateTask(${taskId}); return false;">
             <div class="modal-form-group">
               <label for="edit-task-title">Title</label>
@@ -881,38 +881,70 @@
     }
   });
 
-  // Hover functionality for floating button
+  // Hover functionality for floating button with enhanced sensitivity
   document.addEventListener('DOMContentLoaded', function() {
     const button = document.getElementById('floatingButton');
     const menu = document.getElementById('floatingMenu');
+    let closeTimer = null;
     
     if (button && menu) {
+      const menuItems = menu.querySelectorAll('.menu-item');
+      
+      // Clear any pending close timer
+      function clearCloseTimer() {
+        if (closeTimer) {
+          clearTimeout(closeTimer);
+          closeTimer = null;
+        }
+      }
+      
+      // Schedule menu close with delay
+      function scheduleClose() {
+        clearCloseTimer();
+        closeTimer = setTimeout(function() {
+          // Check if mouse is over button, menu container, or any menu item
+          const isOverButton = button.matches(':hover');
+          const isOverMenu = menu.matches(':hover');
+          const isOverMenuItem = Array.from(menuItems).some(item => item.matches(':hover'));
+          
+          if (!isOverButton && !isOverMenu && !isOverMenuItem) {
+            closeFloatingMenu();
+          }
+        }, 800); // Extended delay for easier navigation
+      }
+      
       // Show menu on button hover
       button.addEventListener('mouseenter', function() {
+        clearCloseTimer();
         openFloatingMenu();
       });
       
-      // Keep menu open when hovering over menu
+      // Keep menu open when hovering over menu container
       menu.addEventListener('mouseenter', function() {
+        clearCloseTimer();
         openFloatingMenu();
       });
       
-      // Close menu when leaving button (if not entering menu)
-      button.addEventListener('mouseleave', function() {
-        setTimeout(function() {
-          if (!menu.matches(':hover') && !button.matches(':hover')) {
-            closeFloatingMenu();
-          }
-        }, 100);
+      // Keep menu open when hovering over menu items
+      menuItems.forEach(function(item) {
+        item.addEventListener('mouseenter', function() {
+          clearCloseTimer();
+          openFloatingMenu();
+        });
+        
+        item.addEventListener('mouseleave', function() {
+          scheduleClose();
+        });
       });
       
-      // Close menu when leaving menu (if not entering button)
+      // Schedule close when leaving button
+      button.addEventListener('mouseleave', function() {
+        scheduleClose();
+      });
+      
+      // Schedule close when leaving menu container
       menu.addEventListener('mouseleave', function() {
-        setTimeout(function() {
-          if (!menu.matches(':hover') && !button.matches(':hover')) {
-            closeFloatingMenu();
-          }
-        }, 100);
+        scheduleClose();
       });
     }
   });
@@ -958,4 +990,5 @@
       <small>Alarms and notes</small>
     </div>
   <% end %>
+</div>
 </div>

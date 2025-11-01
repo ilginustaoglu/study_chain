@@ -1,4 +1,4 @@
-# StudyChain 📚
+# StudyChain <i class="fa-solid fa-book"></i>
 
 A comprehensive study management platform built with Ruby on Rails, designed to help students organize their learning journey with powerful tools and features.
 
@@ -10,7 +10,7 @@ A comprehensive study management platform built with Ruby on Rails, designed to 
 - Quick note creation and editing
 - Search and filter capabilities
 
-### ⏱️ Pomodoro Timers
+### <i class="fa-solid fa-clock"></i> Pomodoro Timers
 - Multiple customizable timers
 - Pomodoro technique support
 - Start, pause, and reset functionality

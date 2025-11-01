@@ -11,7 +11,7 @@
         </span>
       <% end %>
       <span style="color: var(--text-secondary); font-size: 0.9em; background: var(--bg-tertiary); padding: 6px 14px; border-radius: 20px; border: 2px solid var(--border-color);">
-        📚 <%= @flashcards.count %> <%= @flashcards.count == 1 ? 'Card' : 'Cards' %>
+        <i class="fa-solid fa-book"></i> <%= @flashcards.count %> <%= @flashcards.count == 1 ? 'Card' : 'Cards' %>
       </span>
     </div>
     
@@ -109,7 +109,7 @@
       <!-- Cards List -->
       <div style="background: var(--bg-secondary); padding: 30px; border-radius: 15px; box-shadow: var(--shadow-md);">
         <h3 style="color: var(--text-primary); margin-bottom: 25px; font-size: 1.5em;">
-          📚 All Cards (<%= @flashcards.count %>)
+          <i class="fa-solid fa-book"></i> All Cards (<%= @flashcards.count %>)
         </h3>
         
         <div style="display: grid; gap: 15px;">

@@ -136,7 +136,7 @@ RAILS_ENV=production rails assets:precompile
 - [ ] Monitor logs for errors
 - [ ] Test critical user flows in production
 
-## 📚 Key Changes to Remember
+## <i class="fa-solid fa-book"></i> Key Changes to Remember
 
 1. **Turbolinks → Turbo**: Update event listeners
    ```javascript

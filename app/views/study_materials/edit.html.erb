@@ -8,7 +8,7 @@
 </div>
 
 <div class="container" style="max-width: 800px; margin: 40px auto; padding: 20px;">
-  <h1 style="color: var(--text-primary); font-size: 2.5em; margin-bottom: 30px;">✏️ Edit Study Material</h1>
+  <h1 style="color: var(--text-primary); font-size: 2.5em; margin-bottom: 30px;"><i class="fa-solid fa-pencil"></i> Edit Study Material</h1>
 
   <%= form_with model: @study_material, local: true, multipart: true, style: "background: var(--bg-secondary); padding: 30px; border-radius: 10px; box-shadow: var(--shadow-md);" do |f| %>
     <div style="margin-bottom: 20px;">
@@ -42,7 +42,7 @@
               <strong style="margin-left: 8px;"><%= file.filename %></strong>
               <span style="color: var(--text-secondary); margin-left: 8px; font-size: 0.9em;">(<%= number_to_human_size(file.byte_size) %>)</span>
             </div>
-            <%= link_to "🗑️ Delete", remove_file_study_material_path(@study_material, file_id: file.id), method: :delete, data: { confirm: "Are you sure you want to delete this file?" }, style: "background: #e74c3c; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.9em;" %>
+            <%= link_to "<i class="fa-solid fa-trash"></i> Delete", remove_file_study_material_path(@study_material, file_id: file.id), method: :delete, data: { confirm: "Are you sure you want to delete this file?" }, style: "background: #e74c3c; color: white; padding: 6px 12px; border-radius: 5px; text-decoration: none; font-weight: bold; font-size: 0.9em;" %>
           </div>
         <% end %>
       </div>
