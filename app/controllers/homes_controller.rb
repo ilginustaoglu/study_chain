@@ -7,6 +7,12 @@ class HomesController < ApplicationController
     else
       Note.none
     end
+    
+    @tasks = if current_user.premium? || current_user.admin?
+      Task.all.order(created_at: :desc)
+    else
+      Task.none
+    end
   end
 
   def show
