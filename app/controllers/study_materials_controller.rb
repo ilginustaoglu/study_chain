@@ -4,15 +4,15 @@ class StudyMaterialsController < ApplicationController
   before_action :set_study_material, only: [:show, :edit, :update, :destroy, :remove_file]
 
   def index
-    @study_materials = StudyMaterial.all.order(created_at: :desc)
+    @study_materials = current_user.study_materials.order(created_at: :desc)
   end
 
   def new
-    @study_material = StudyMaterial.new
+    @study_material = current_user.study_materials.build
   end
 
   def create
-    @study_material = StudyMaterial.new(study_material_params)
+    @study_material = current_user.study_materials.build(study_material_params)
     
     if @study_material.save
       redirect_to study_materials_path, notice: 'Ders notu başarıyla oluşturuldu.'
@@ -53,7 +53,7 @@ class StudyMaterialsController < ApplicationController
   private
 
   def set_study_material
-    @study_material = StudyMaterial.find(params[:id])
+    @study_material = current_user.study_materials.find(params[:id])
   end
 
   def study_material_params

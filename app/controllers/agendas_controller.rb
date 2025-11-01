@@ -4,16 +4,16 @@ class AgendasController < ApplicationController
   before_action :set_agenda, only: [:show, :edit, :update, :destroy]
 
   def index
-    @agendas = Agenda.order(:event_date)
-    @agenda = Agenda.new
+    @agendas = current_user.agendas.order(:event_date)
+    @agenda = current_user.agendas.build
   end
 
   def new
-    @agenda = Agenda.new
+    @agenda = current_user.agendas.build
   end
 
   def create
-    @agenda = Agenda.new(agenda_params)
+    @agenda = current_user.agendas.build(agenda_params)
     
     if @agenda.save
       redirect_to agendas_path, notice: 'Etkinlik eklendi.'
@@ -44,7 +44,7 @@ class AgendasController < ApplicationController
   private
 
   def set_agenda
-    @agenda = Agenda.find(params[:id])
+    @agenda = current_user.agendas.find(params[:id])
   end
 
   def agenda_params

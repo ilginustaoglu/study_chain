@@ -1,4 +1,6 @@
 class Reminder < ApplicationRecord
+  belongs_to :user
+  
   validates :title, presence: true
   
   scope :active, -> { where(is_active: true) }

@@ -2,23 +2,22 @@ class HomesController < ApplicationController
   before_action :require_authenticated_user
   
   def index
+    # Notes - Premium/Admin only
     @notes = if current_user.premium? || current_user.admin?
-      Note.all.order(created_at: :desc)
+      current_user.notes.order(created_at: :desc)
     else
       Note.none
     end
     
+    # Tasks - Premium/Admin only
     @tasks = if current_user.premium? || current_user.admin?
-      Task.all.order(created_at: :desc)
+      current_user.tasks.order(created_at: :desc)
     else
       Task.none
     end
     
-    @timers = if current_user.premium? || current_user.admin?
-      Timer.all.order(created_at: :asc)
-    else
-      Timer.none
-    end
+    # Timers - Available for all users (basic study tool)
+    @timers = current_user.timers.order(created_at: :asc)
   end
 
   def show

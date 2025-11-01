@@ -2,15 +2,15 @@
 
 <div class="library-container">
   <!-- Timers Panel (Top Left) -->
+  <div class="timers-panel-left">
     <!-- Timers List -->
     <div class="timers-list">
-      <% if @timers.empty? %>
-        <p class="empty-message">No timers yet.</p>
-      <% else %>
-        <% @timers.each do |timer| %>
+      <% @timers.each do |timer| %>
           <div class="timer-box-dual" id="timer-<%= timer.id %>" data-timer-id="<%= timer.id %>">
+            
+            <!-- Timer Header -->
             <div class="timer-header">
-              ⏱️ <%= timer.name %>
+              ⏱️ Timer
             </div>
             
             <!-- Two Timers in One Table -->
@@ -40,10 +40,10 @@
               </button>
             </div>
           </div>
-        <% end %>
       <% end %>
     </div>
   </div>
+  <!-- End Timers Panel -->
 
   <!-- Notes Area (Center) -->
   <div class="notes-center-area">

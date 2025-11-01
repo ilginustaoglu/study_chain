@@ -1,4 +1,6 @@
 class Timer < ApplicationRecord
+  belongs_to :user
+  
   validates :name, presence: true
   
   # Çalışma zamanını HH:MM:SS formatında döndürür
