@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_152851) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -115,6 +115,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_152851) do
     t.integer "target_duration"
     t.integer "pomodoro_count"
     t.string "session_type"
+    t.integer "break_seconds", default: 0, null: false
+    t.string "active_timer", default: "study", null: false
   end
 
   create_table "users", force: :cascade do |t|

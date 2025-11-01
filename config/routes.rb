@@ -34,6 +34,7 @@ Rails.application.routes.draw do
       patch :pause
       patch :reset
       patch :tick
+      patch :toggle_break
     end
   end
   
