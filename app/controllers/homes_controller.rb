@@ -13,6 +13,12 @@ class HomesController < ApplicationController
     else
       Task.none
     end
+    
+    @timers = if current_user.premium? || current_user.admin?
+      Timer.all.order(created_at: :asc)
+    else
+      Timer.none
+    end
   end
 
   def show
@@ -30,7 +36,7 @@ class HomesController < ApplicationController
   def create
     @home = Home.new(home_params)
     if @home.save
-      redirect_to root_path, notice: "Not başarıyla eklendi!"
+      redirect_to root_path, notice: "Note successfully added!"
     else
       render :new
     end
@@ -43,7 +49,7 @@ class HomesController < ApplicationController
   def update
     @home = Home.find(params[:id])
     if @home.update(home_params)
-      redirect_to root_path, notice: "Not başarıyla güncellendi!"
+      redirect_to root_path, notice: "Note successfully updated!"
     else
       render :edit
     end
@@ -54,8 +60,8 @@ class HomesController < ApplicationController
     @home.destroy
     
     respond_to do |format|
-      format.html { redirect_to root_path, notice: "Not başarıyla silindi!" }
-      format.json { render json: { message: "Not başarıyla silindi!" }, status: :ok }
+      format.html { redirect_to root_path, notice: "Note successfully deleted!" }
+      format.json { render json: { message: "Note successfully deleted!" }, status: :ok }
     end
   end
 
