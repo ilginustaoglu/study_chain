@@ -3,11 +3,11 @@ class NotesController < ApplicationController
   before_action :require_premium_or_admin
 
   def index
-    @notes = Note.all.order(created_at: :desc)
+    @notes = current_user.notes.order(created_at: :desc)
   end
 
   def show
-    @note = Note.find(params[:id])
+    @note = current_user.notes.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @note }
@@ -15,15 +15,15 @@ class NotesController < ApplicationController
   end
 
   def new
-    @note = Note.new
+    @note = current_user.notes.build
   end
 
   def edit
-    @note = Note.find(params[:id])
+    @note = current_user.notes.find(params[:id])
   end
 
   def create
-    @note = Note.new(note_params)
+    @note = current_user.notes.build(note_params)
     if @note.save
       redirect_to root_path, notice: "Note successfully created!"
     else
@@ -32,7 +32,7 @@ class NotesController < ApplicationController
   end
 
   def update
-    @note = Note.find(params[:id])
+    @note = current_user.notes.find(params[:id])
     if @note.update(note_params)
       respond_to do |format|
         format.html { redirect_to root_path, notice: "Note successfully updated!" }
@@ -47,7 +47,7 @@ class NotesController < ApplicationController
   end
 
   def destroy
-    @note = Note.find(params[:id])
+    @note = current_user.notes.find(params[:id])
     @note.destroy
     
     respond_to do |format|

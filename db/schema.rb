@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_01_184926) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -48,6 +48,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.datetime "event_date", precision: nil
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_agendas_on_user_id"
   end
 
   create_table "flashcard_collections", force: :cascade do |t|
@@ -55,6 +57,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_flashcard_collections_on_user_id"
   end
 
   create_table "flashcards", force: :cascade do |t|
@@ -78,6 +82,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
   create_table "reminders", force: :cascade do |t|
@@ -87,6 +93,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.boolean "is_active"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_reminders_on_user_id"
   end
 
   create_table "study_materials", force: :cascade do |t|
@@ -95,6 +103,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_study_materials_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -103,6 +113,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.boolean "completed", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
   create_table "timers", force: :cascade do |t|
@@ -117,6 +129,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
     t.string "session_type"
     t.integer "break_seconds", default: 0, null: false
     t.string "active_timer", default: "study", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_timers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -144,5 +158,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_01_174634) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "agendas", "users"
+  add_foreign_key "flashcard_collections", "users"
   add_foreign_key "flashcards", "flashcard_collections"
+  add_foreign_key "notes", "users"
+  add_foreign_key "reminders", "users"
+  add_foreign_key "study_materials", "users"
+  add_foreign_key "tasks", "users"
+  add_foreign_key "timers", "users"
 end

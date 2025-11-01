@@ -1,6 +1,6 @@
 class TimersController < ApplicationController
   before_action :require_authenticated_user
-  before_action :require_premium_or_admin
+  # Timer is a basic study tool - available for all users
 
   def index
     # Timers artık homes sayfasında gösteriliyor
@@ -8,7 +8,7 @@ class TimersController < ApplicationController
   end
 
   def show
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     respond_to do |format|
       format.html
       format.json { render json: @timer }
@@ -16,15 +16,15 @@ class TimersController < ApplicationController
   end
 
   def new
-    @timer = Timer.new
+    @timer = current_user.timers.build
   end
 
   def edit
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
   end
 
   def create
-    @timer = Timer.new(timer_params)
+    @timer = current_user.timers.build(timer_params)
     if @timer.save
       respond_to do |format|
         format.html { redirect_to timers_path, notice: "Timer successfully created!" }
@@ -39,7 +39,7 @@ class TimersController < ApplicationController
   end
 
   def update
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     if @timer.update(timer_params)
       respond_to do |format|
         format.html { redirect_to timers_path, notice: "Timer successfully updated!" }
@@ -54,7 +54,7 @@ class TimersController < ApplicationController
   end
 
   def destroy
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     @timer.destroy
     
     respond_to do |format|
@@ -65,25 +65,25 @@ class TimersController < ApplicationController
 
   # Timer'ı başlat/duraklat/sıfırla için API endpoint'leri
   def start
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     @timer.update(is_running: true)
     render json: @timer
   end
 
   def pause
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     @timer.update(is_running: false)
     render json: @timer
   end
 
   def reset
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     @timer.update(seconds: 0, break_seconds: 0, is_running: false, active_timer: 'study')
     render json: @timer
   end
 
   def tick
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     if @timer.is_running
       if @timer.active_timer == 'study'
         @timer.increment!(:seconds)
@@ -95,7 +95,7 @@ class TimersController < ApplicationController
   end
   
   def toggle_break
-    @timer = Timer.find(params[:id])
+    @timer = current_user.timers.find(params[:id])
     
     if @timer.active_timer == 'study'
       # Break'e geçiş yap

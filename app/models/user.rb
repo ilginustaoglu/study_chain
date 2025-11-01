@@ -7,6 +7,18 @@ class User < ApplicationRecord
   # Role enum: normal users have limited access, premium users have full access, admin has all permissions
   enum :role, { normal: 0, premium: 1, admin: 2 }
 
+  # Associations
+  has_many :tasks, dependent: :destroy
+  has_many :notes, dependent: :destroy
+  has_many :timers, dependent: :destroy
+  has_many :study_materials, dependent: :destroy
+  has_many :flashcard_collections, dependent: :destroy
+  has_many :reminders, dependent: :destroy
+  has_many :agendas, dependent: :destroy
+
+  # Callbacks
+  after_create :create_default_timer
+
   # Validations
   validates :name, presence: true
 
@@ -74,5 +86,18 @@ class User < ApplicationRecord
     else
       30.minutes  # Default timeout for non-persistent sessions
     end
+  end
+
+  private
+
+  # Create default timer for new users
+  def create_default_timer
+    timers.create!(
+      name: 'Ders Çalışma',
+      seconds: 0,
+      break_seconds: 0,
+      is_running: false,
+      active_timer: 'study'
+    )
   end
 end

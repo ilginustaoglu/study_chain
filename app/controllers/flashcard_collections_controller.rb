@@ -4,15 +4,15 @@ class FlashcardCollectionsController < ApplicationController
   before_action :set_collection, only: [:show, :edit, :update, :destroy, :add_card, :remove_card]
 
   def index
-    @collections = FlashcardCollection.all.order(created_at: :desc)
+    @collections = current_user.flashcard_collections.order(created_at: :desc)
   end
 
   def new
-    @collection = FlashcardCollection.new
+    @collection = current_user.flashcard_collections.build
   end
 
   def create
-    @collection = FlashcardCollection.new(collection_params)
+    @collection = current_user.flashcard_collections.build(collection_params)
     
     if @collection.save
       redirect_to flashcard_collections_path, notice: 'Koleksiyon başarıyla oluşturuldu.'
@@ -62,7 +62,7 @@ class FlashcardCollectionsController < ApplicationController
   private
 
   def set_collection
-    @collection = FlashcardCollection.find(params[:id])
+    @collection = current_user.flashcard_collections.find(params[:id])
   end
 
   def collection_params

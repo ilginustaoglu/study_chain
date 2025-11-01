@@ -4,16 +4,16 @@ class RemindersController < ApplicationController
   before_action :set_reminder, only: [:show, :edit, :update, :destroy, :toggle_alarm]
 
   def index
-    @reminders = Reminder.order(:alarm_time)
-    @reminder = Reminder.new
+    @reminders = current_user.reminders.order(:alarm_time)
+    @reminder = current_user.reminders.build
   end
 
   def new
-    @reminder = Reminder.new
+    @reminder = current_user.reminders.build
   end
 
   def create
-    @reminder = Reminder.new(reminder_params)
+    @reminder = current_user.reminders.build(reminder_params)
     @reminder.is_active = true if @reminder.is_active.nil?
     
     if @reminder.save
@@ -50,7 +50,7 @@ class RemindersController < ApplicationController
   private
 
   def set_reminder
-    @reminder = Reminder.find(params[:id])
+    @reminder = current_user.reminders.find(params[:id])
   end
 
   def reminder_params
